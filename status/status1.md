@@ -5,7 +5,7 @@ Progress Update 1
 1. **Recap:**
    1. We spent this time getting all members to the same level of understanding with the technologies and math needed for us to complete this project. In our first meeting, we met to decide what platform we would create the application in and decided on Maui Blazor. In the second meeting we went over the algorithm for the Walsh-Hadamard Transform and solidified objectives for creating the initial application. All members were present for both meetings and contributed to the design decisions.
 1. **Tasks completed:**
-   1. General**:** All members were tasked with finding resources regarding the technologies/math needed to create this application. We are focusing on creating a uniform understanding of the app in general with each member focusing on some point of interest that will best benefit the group. 
+   1. General: All members were tasked with finding resources regarding the technologies/math needed to create this application. We are focusing on creating a uniform understanding of the app in general with each member focusing on some point of interest that will best benefit the group. 
    1. Derik: Post WH and Fourier resources, get algorithm planned out with roadmap
    1. Kain: Research WHT and Fourier transforms in general
    1. Chet: C# experimentation, Familiarize with Maui Blazor
