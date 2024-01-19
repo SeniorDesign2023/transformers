@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "0CoTIGMwahEXUBTdGV4W8sZuOXAyyLsneyV+dahjQbw=",
+  "Hash": "WnfgLqqam1NlPjUSl3oSXTH68ILGXbyX/XrE6nAbWLs=",
   "Source": "Client",
   "BasePath": "/",
   "Mode": "Root",
@@ -100,6 +100,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Identity": "C:\\Users\\fmart\\Senior_Design\\transformers\\Client\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "SourceId": "Client",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\fmart\\Senior_Design\\transformers\\Client\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "css/open-iconic/FONT-LICENSE",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\open-iconic\\FONT-LICENSE"
     },
     {
       "Identity": "C:\\Users\\fmart\\Senior_Design\\transformers\\Client\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
@@ -202,23 +219,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
-    },
-    {
-      "Identity": "C:\\Users\\fmart\\Senior_Design\\transformers\\Client\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
-      "SourceId": "Client",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\fmart\\Senior_Design\\transformers\\Client\\wwwroot\\",
-      "BasePath": "/",
-      "RelativePath": "css/open-iconic/FONT-LICENSE",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\open-iconic\\FONT-LICENSE"
     },
     {
       "Identity": "C:\\Users\\fmart\\Senior_Design\\transformers\\Client\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
