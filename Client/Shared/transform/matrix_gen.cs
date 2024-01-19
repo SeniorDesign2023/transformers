@@ -11,14 +11,14 @@ namespace HadimardGen {
             return null;
         }
        
-        public static void generate(int[,] previous_matrix, int M){
+        public static void generate(int[,] previous_matrix, int start, int M){
 
             if(M == 1){
                 display_matrix(previous_matrix, 2);
                 return;
             }else{
                 //Creates and displays each hadimard matrix up until HM
-                for(int i = 1; i <= M; i++){
+                for(int i = start; i <= M; i++){
                     Console.WriteLine("Here " + i);
                     Console.WriteLine();
                     int size = (int)Math.Pow(2, i);
@@ -75,9 +75,9 @@ namespace HadimardGen {
 
         // Main Method 
         static public void Main() { 
-            int[,] base_hadamard = new int[2, 2] {{1, 1}, {1, -1}};
+            int[,] base_hadamard = new int[4, 4] {{1, 1,1,1}, {1, -1,1,-1}, {1, 1,-1,-1}, {1, -1,-1,1}};
                 
-            generate(base_hadamard,5);
+            generate(base_hadamard,2,3);
                 
         } 
     }
