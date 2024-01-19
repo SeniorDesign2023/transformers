@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/calvin/Documents/uwyo/s24/senior_design/hadimard/hadimard.csproj",
+      "projectUniqueName": "/home/calvin/Documents/uwyo/s24/senior_design/transformers/Client/Shared/transform/hadimard.csproj",
       "projectName": "hadimard",
-      "projectPath": "/home/calvin/Documents/uwyo/s24/senior_design/hadimard/hadimard.csproj",
+      "projectPath": "/home/calvin/Documents/uwyo/s24/senior_design/transformers/Client/Shared/transform/hadimard.csproj",
       "packagesPath": "/home/calvin/.nuget/packages/",
-      "outputPath": "/home/calvin/Documents/uwyo/s24/senior_design/hadimard/obj/",
+      "outputPath": "/home/calvin/Documents/uwyo/s24/senior_design/transformers/Client/Shared/transform/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/calvin/.nuget/NuGet/NuGet.Config"

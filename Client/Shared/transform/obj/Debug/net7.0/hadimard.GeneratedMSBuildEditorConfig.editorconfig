@@ -8,4 +8,4 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = hadimard
-build_property.ProjectDir = /home/calvin/Documents/uwyo/s24/senior_design/hadimard/
+build_property.ProjectDir = /home/calvin/Documents/uwyo/s24/senior_design/transformers/Client/Shared/transform/
