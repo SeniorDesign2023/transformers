@@ -1,7 +1,30 @@
 ﻿using System; 
 // namespace declaration 
 namespace HadimardGen { 
+    
     // Class declaration 
+
+    public class Matrix{
+         public string name{
+            get;    
+            set;
+        }
+
+        public int[,] matrix{
+            get;
+            set;
+        }
+    }
+
+    public class Matrices{
+        public IList<Matrix> matrices{
+            get;
+            set;
+        }
+       
+    }
+    
+    //Class to generate and display hadimard matrices
     class Generator { 
         
         //Function to find and return the hadimard matrix of size M from the JSON file
@@ -10,6 +33,7 @@ namespace HadimardGen {
             //TODO: Search JSON file for desired matrix and return in correct form
             return null;
         }
+
        
         public static void generate(int[,] previous_matrix, int start, int M){
 
@@ -60,7 +84,7 @@ namespace HadimardGen {
                 } 
             }
 
-                   
+                 
         }
 
         public static void display_matrix(int[,] matrix, int size){
@@ -73,11 +97,23 @@ namespace HadimardGen {
                 }
         }
 
-        // Main Method 
+    }
+    
+    //Class to create and work with JSON file
+    public class JSON{
+        public static void create_JSON(){
+
+        }
+
+    }
+
+    class Program{
+         // Main Method 
         static public void Main() { 
             int[,] base_hadamard = new int[4, 4] {{1, 1,1,1}, {1, -1,1,-1}, {1, 1,-1,-1}, {1, -1,-1,1}};
+
                 
-            generate(base_hadamard,2,3);
+            Generator.generate(base_hadamard,2,3);
                 
         } 
     }
