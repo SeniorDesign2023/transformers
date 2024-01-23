@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "UFVK5wD6Nafzyrh1EwOShvtVZcfS4MW5fEF8aNh9xvRVvTVqF58jqT+KjsxQBz2wgJJRktsivbF8jO2AczUFpA==",
+  "dgSpecHash": "e8NhTw7v9lPxwi7rufRyr75DY39E5bNRmCKNQt4eOjxUC4bs1855ip4Uh102WjkkNq3AGpK8o5exZEevN/Imdg==",
   "success": true,
   "projectFilePath": "/home/calvin/Documents/uwyo/s24/senior_design/transformers/Client/Shared/transform/hadimard.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/home/calvin/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
   "logs": []
 }

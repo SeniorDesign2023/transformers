@@ -1,26 +1,24 @@
-﻿using System; 
-// namespace declaration 
+﻿// namespace declaration 
 namespace HadimardGen { 
     
     // Class declaration 
+    using Newtonsoft.Json;
 
     public class Matrix{
-         public string name{
+         public string? name{
             get;    
             set;
         }
 
-        public int[,] matrix{
+        public int[,]? matrix{
             get;
             set;
         }
     }
 
     public class Matrices{
-        public IList<Matrix> matrices{
-            get;
-            set;
-        }
+        public IList<Matrix>? Hadamard {get; set;} = new List<Matrix>();
+        public int number_of_matrices {get; set;} = 0;
        
     }
     
@@ -36,7 +34,7 @@ namespace HadimardGen {
 
        
         public static void generate(int[,] previous_matrix, int start, int M){
-
+            Matrices matrices = new();
             if(M == 1){
                 display_matrix(previous_matrix, 2);
                 return;
@@ -75,16 +73,20 @@ namespace HadimardGen {
                             temp[j,k] = -1 * previous_matrix[j - size/2,k - size/2];
                         }
                     }
-
-                    display_matrix(temp, size);
-                    Console.WriteLine();
+                    matrices.number_of_matrices++;
+                    //display_matrix(temp, size);
+                    matrices.Hadamard.Add(new Matrix(){name = "H" + i, matrix = temp});
+                    //Console.WriteLine();
 
                     previous_matrix = temp;
 
-                } 
-            }
+                }
 
-                 
+            }
+            //var output = JsonSerializer.Serialize(matrices);
+            var jsonout= JsonConvert.SerializeObject(matrices);
+            File.WriteAllText("hadimard_matrices.json", jsonout);
+            //Console.WriteLine(jsonout);
         }
 
         public static void display_matrix(int[,] matrix, int size){
@@ -102,6 +104,10 @@ namespace HadimardGen {
     //Class to create and work with JSON file
     public class JSON{
         public static void create_JSON(){
+            string fileName = "hadimard_matrices.json";
+            string jsonString = File.ReadAllText(fileName);
+            Matrices matrices = JsonConvert.DeserializeObject<Matrices>(jsonString);
+            Console.WriteLine(matrices.number_of_matrices);
 
         }
 
@@ -113,7 +119,7 @@ namespace HadimardGen {
             int[,] base_hadamard = new int[4, 4] {{1, 1,1,1}, {1, -1,1,-1}, {1, 1,-1,-1}, {1, -1,-1,1}};
 
                 
-            Generator.generate(base_hadamard,2,3);
+            Generator.generate(base_hadamard,1,14);
                 
         } 
     }

@@ -18,11 +18,13 @@
 /home/calvin/Documents/uwyo/s24/senior_design/transformers/Client/Shared/transform/bin/Debug/net7.0/hadimard.runtimeconfig.json
 /home/calvin/Documents/uwyo/s24/senior_design/transformers/Client/Shared/transform/bin/Debug/net7.0/hadimard.dll
 /home/calvin/Documents/uwyo/s24/senior_design/transformers/Client/Shared/transform/bin/Debug/net7.0/hadimard.pdb
+/home/calvin/Documents/uwyo/s24/senior_design/transformers/Client/Shared/transform/bin/Debug/net7.0/Newtonsoft.Json.dll
 /home/calvin/Documents/uwyo/s24/senior_design/transformers/Client/Shared/transform/obj/Debug/net7.0/hadimard.csproj.AssemblyReference.cache
 /home/calvin/Documents/uwyo/s24/senior_design/transformers/Client/Shared/transform/obj/Debug/net7.0/hadimard.GeneratedMSBuildEditorConfig.editorconfig
 /home/calvin/Documents/uwyo/s24/senior_design/transformers/Client/Shared/transform/obj/Debug/net7.0/hadimard.AssemblyInfoInputs.cache
 /home/calvin/Documents/uwyo/s24/senior_design/transformers/Client/Shared/transform/obj/Debug/net7.0/hadimard.AssemblyInfo.cs
 /home/calvin/Documents/uwyo/s24/senior_design/transformers/Client/Shared/transform/obj/Debug/net7.0/hadimard.csproj.CoreCompileInputs.cache
+/home/calvin/Documents/uwyo/s24/senior_design/transformers/Client/Shared/transform/obj/Debug/net7.0/hadimard.csproj.CopyComplete
 /home/calvin/Documents/uwyo/s24/senior_design/transformers/Client/Shared/transform/obj/Debug/net7.0/hadimard.dll
 /home/calvin/Documents/uwyo/s24/senior_design/transformers/Client/Shared/transform/obj/Debug/net7.0/refint/hadimard.dll
 /home/calvin/Documents/uwyo/s24/senior_design/transformers/Client/Shared/transform/obj/Debug/net7.0/hadimard.pdb
