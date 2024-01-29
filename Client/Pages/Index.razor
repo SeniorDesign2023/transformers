@@ -2,6 +2,7 @@
 
 @using Client.Models
 @using Client.Services
+@using Plotly.NET.CSharp
 @inject DataService DataServ
 
 <h1>Transformers</h1>
@@ -14,7 +15,8 @@
     }
 </ul>
 
-<ExampleChart/>
+<ScatterChart/>
+<BarChart/>
 
 @code {
     private Data data;
@@ -23,15 +25,6 @@
     {
         // Gather temporary data
         data = await DataServ.GetDataAsync();
-
-        @* Chart.Point<double, double, string>(
-            x: new double[] { 1, 2 }, 
-            y: new double[] { 5, 10 }
-        )
-        .WithTraceInfo("Hello from C#", ShowLegend: true)
-        .WithXAxisStyle<double, double, string>(Title: Plotly.NET.Title.init("xAxis"))
-        .WithYAxisStyle<double, double, string>(Title: Plotly.NET.Title.init("yAxis"))
-        .Show(); *@
     }
 }
 

@@ -4,8 +4,8 @@
 
 @code
 {
-    @* [CascadingParameter] *@
-    @* private MudTheme Theme { get; set; } *@
+    [CascadingParameter]
+    private MudTheme Theme { get; set; }
 
     private PlotlyChart chart;
     private Config config;
@@ -25,12 +25,6 @@
             Title = new Title
             {
                 Text = GetType().Name
-            },
-            @* PaperBgColor = Theme.PaletteDark.Surface.ToString(), *@
-            @* PlotBgColor = Theme.PaletteDark.Surface.ToString(), *@
-            Font = new Font
-            {
-                @* Color = Theme.PaletteDark.TextPrimary.ToString() *@
             },
             BarMode = BarModeEnum.Stack
         };
