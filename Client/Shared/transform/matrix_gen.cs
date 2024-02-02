@@ -1,6 +1,7 @@
 ﻿// namespace declaration 
-namespace HadimardGen { 
-    
+namespace HadimardGen {
+    using System.CodeDom.Compiler;
+
     // Class declaration 
     using Newtonsoft.Json;
 
@@ -14,35 +15,46 @@ namespace HadimardGen {
             get;
             set;
         }
+
+        public int[]? walsh{
+            get;
+            set;
+        }
     }
 
-    public class Matrices{
-        public IList<Matrix>? Hadamard {get; set;} = new List<Matrix>();
-        public int number_of_matrices {get; set;} = 0;
+    // public class Matrices{
+    //     public IList<Matrix>? Hadamard {get; set;} = new List<Matrix>();
+    //     public int number_of_matrices {get; set;} = 0;
        
-    }
+    // }
     
     //Class to generate and display hadimard matrices
     class Generator { 
-        
-        //Function to find and return the hadimard matrix of size M from the JSON file
-        //If the matrix is not found, it will return the last generated hadimard matrix
-        public static int[,] find_matrix(int M){
-            //TODO: Search JSON file for desired matrix and return in correct form
-            return null;
-        }
+        //Function to generate hadimard matrices up to HM
+        public static void generate_hadimard(int[,] previous_matrix, int start, int M){
+            Matrix matrix = new();
 
-       
-        public static void generate(int[,] previous_matrix, int start, int M){
-            Matrices matrices = new();
             if(M == 1){
-                display_matrix(previous_matrix, 2);
+                var walsh = generate_walsh(previous_matrix);
+                var valid_walsh = check_repeats(walsh);
+                if (valid_walsh){
+                    Console.WriteLine("Invalid walsh"); 
+                    return;
+                }
+                matrix.walsh = walsh;
+                matrix.name = "H" + 1;
+                matrix.matrix = previous_matrix;
+                var fileName = $"hadimard_{1}.json";
+                Console.WriteLine(fileName);
+                var jsonout= JsonConvert.SerializeObject(matrix);
+                File.WriteAllText(fileName, jsonout);
+                Console.WriteLine(jsonout);
+                Console.WriteLine();
+
                 return;
             }else{
                 //Creates and displays each hadimard matrix up until HM
                 for(int i = start; i <= M; i++){
-                    Console.WriteLine("Here " + i);
-                    Console.WriteLine();
                     int size = (int)Math.Pow(2, i);
                     int[,] temp = new int[size, size];
 
@@ -73,20 +85,67 @@ namespace HadimardGen {
                             temp[j,k] = -1 * previous_matrix[j - size/2,k - size/2];
                         }
                     }
-                    matrices.number_of_matrices++;
-                    //display_matrix(temp, size);
-                    matrices.Hadamard.Add(new Matrix(){name = "H" + i, matrix = temp});
-                    //Console.WriteLine();
+
+                    var walsh = new int[size];
+                    walsh = generate_walsh(temp);
+                    var valid_walsh = check_repeats(walsh);
+                    if (valid_walsh){
+                        Console.WriteLine("Invalid walsh"); 
+                        return;
+                    }
+                    //Writes Matrix to a JSON file
+                    matrix.walsh = walsh;
+                    matrix.name = "H" + i;
+                    matrix.matrix = temp;
+                    var fileName = $"hadimard_{i}.json";
+                    Console.WriteLine(fileName);
+                    var jsonout= JsonConvert.SerializeObject(matrix);
+                    File.WriteAllText(fileName, jsonout);
+                    Console.WriteLine(jsonout);
+                    Console.WriteLine();
 
                     previous_matrix = temp;
 
                 }
 
             }
-            //var output = JsonSerializer.Serialize(matrices);
-            var jsonout= JsonConvert.SerializeObject(matrices);
-            File.WriteAllText("hadimard_matrices.json", jsonout);
-            //Console.WriteLine(jsonout);
+        }
+
+        public static int[] generate_walsh(int[,] matrix){
+            int[] walsh = new int[matrix.GetLength(0)];
+            for(int i = 0; i < matrix.GetLength(0); i++){
+                int flips = 0;
+                var prev = 0;
+                for(int j = 0; j < matrix.GetLength(1); j++){
+                    if(j == 0){
+                        prev = matrix[i,0];
+                    }else{
+                        prev = matrix[i,j-1];
+                    }
+
+                    if(matrix[i,j] != prev){
+                        flips++;
+                    }
+                }
+
+                walsh[i] = flips;
+            }
+
+            return walsh;
+            
+        }
+
+        //Function to check for repeated numbers in an array
+        public static bool check_repeats(int[] array){
+            for(int i = 0; i < array.Length; i++){
+                for(int j = i + 1; j < array.Length; j++){
+                    if(array[i] == array[j]){
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         public static void display_matrix(int[,] matrix, int size){
@@ -100,26 +159,14 @@ namespace HadimardGen {
         }
 
     }
-    
-    //Class to create and work with JSON file
-    public class JSON{
-        public static void create_JSON(){
-            string fileName = "hadimard_matrices.json";
-            string jsonString = File.ReadAllText(fileName);
-            Matrices matrices = JsonConvert.DeserializeObject<Matrices>(jsonString);
-            Console.WriteLine(matrices.number_of_matrices);
-
-        }
-
-    }
 
     class Program{
          // Main Method 
         static public void Main() { 
-            int[,] base_hadamard = new int[4, 4] {{1, 1,1,1}, {1, -1,1,-1}, {1, 1,-1,-1}, {1, -1,-1,1}};
+            int[,] base_hadamard = new int[2,2] {{1, 1},{1,-1}};
 
                 
-            Generator.generate(base_hadamard,1,14);
+            Generator.generate_hadimard(base_hadamard,1,5);
                 
         } 
     }
