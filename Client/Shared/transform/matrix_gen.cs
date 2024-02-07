@@ -24,6 +24,7 @@ namespace HadimardGen {
     
     //Class to generate and display hadimard matrices
     class Generator { 
+        
         //Function to generate hadimard matrices up to HM
         public static void gen_hadimards(int M){
             int [,] previous_matrix = new int[2,2] {{1, 1},{1,-1}};
@@ -82,6 +83,7 @@ namespace HadimardGen {
             return temp;
         }
 
+        //Function to add a hadimard matrix and its walsh array to a json file
         public static void create_json(int[,] hadimard, int[] walsh, string name){
             Matrix matrix = new();
 
@@ -98,7 +100,7 @@ namespace HadimardGen {
             
         }
         
-
+        //Function that generates an array that correlates the number of flips in each hadimard row
         public static int[] generate_walsh(int[,] matrix){
             int[] walsh = new int[matrix.GetLength(0)];
             for(int i = 0; i < matrix.GetLength(0); i++){
