@@ -93,9 +93,8 @@ namespace HadimardGen {
 
             var fileName = $"{json_path}/hadimard_{name}.json";
             Console.WriteLine(fileName);
-            var jsonout= JsonConvert.SerializeObject(matrix);
+            var jsonout = JsonConvert.SerializeObject(matrix);
             File.WriteAllText(fileName, jsonout);
-            // Console.WriteLine(jsonout);
             Console.WriteLine();
             
         }
@@ -138,6 +137,30 @@ namespace HadimardGen {
             return false;
         }
 
+    }
+
+    public class Transform{
+
+        public static int[] hadimard_transform(int[] input, int size){
+            Matrix hadimard = new();
+            int[] output = new int[input.Length];
+
+            var name = "H" + size;
+            hadimard = get_hadimard(name);
+            var matrix = hadimard.matrix;
+            var walsh = hadimard.walsh;
+            
+
+            return output;
+        }
+
+        public static Matrix get_hadimard(string name){
+            Matrix matrix = new();
+            var fileName = $"./hadimard_{name}.json";
+            var json = File.ReadAllText(fileName);
+            matrix = JsonConvert.DeserializeObject<Matrix>(json);
+            return matrix;
+        }
     }
 
     class Program{
