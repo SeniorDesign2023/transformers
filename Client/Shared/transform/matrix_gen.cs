@@ -115,12 +115,12 @@ namespace HadimardGen {
 
     class Program{
          // Main Method 
-        static public void Main() { 
-            int[,] base_hadamard = new int[4, 4] {{1, 1,1,1}, {1, -1,1,-1}, {1, 1,-1,-1}, {1, -1,-1,1}};
+        // static public void Main() { 
+        //     int[,] base_hadamard = new int[4, 4] {{1, 1,1,1}, {1, -1,1,-1}, {1, 1,-1,-1}, {1, -1,-1,1}};
 
                 
-            Generator.generate(base_hadamard,1,14);
+        //     Generator.generate(base_hadamard,1,14);
                 
-        } 
+        // } 
     }
 } 

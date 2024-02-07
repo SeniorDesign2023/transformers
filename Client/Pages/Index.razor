@@ -2,29 +2,89 @@
 
 @using Client.Models
 @using Client.Services
-@using Plotly.NET.CSharp
+@using System.Text.Json
 @inject DataService DataServ
 
 <h1>Transformers</h1>
 
-<ul class="list-group list-group-horizontal">
-    <li class="list-group-item">Test Data: </li>
-    @foreach (var el in data.Elements)
-    {
-        <li class="list-group-item">@el</li>
-    }
-</ul>
+<InputFile OnChange="@UploadFile" multiple accept=".json" />
 
-<ScatterChart/>
-<BarChart/>
+@if (errors.Count > 0)
+{
+    <h2>Errors</h2>
+    <ul class="text-danger">
+        @foreach (var error in errors)
+        {
+            <li>@error</li>
+        }
+    </ul>
+}
+
+@if (data != null)
+{
+    <ul class="list-group list-group-horizontal">
+        <li class="list-group-item">Test Data: </li>
+        @foreach (var el in data.Elements)
+        {
+            <li class="list-group-item">@el</li>
+        }
+    </ul>
+}
+
 
 @code {
+    private long maxFileSize = 1024 * 1024 * 3; // 3 MB
+    private int maxAllowedFiles = 1;
+    private List<string> errors = new();
     private Data data;
+    
 
-    protected override async Task OnInitializedAsync()
+    @* protected override async Task OnInitializedAsync()
     {
-        // Gather temporary data
-        data = await DataServ.GetDataAsync();
+        data  = await DataServ.GetDataAsync();
+    } *@
+
+    private async Task UploadFile(InputFileChangeEventArgs e)
+    {
+        errors.Clear();
+
+        if (e.FileCount > maxAllowedFiles)
+        {
+            errors.Add($"Error: Attempting to upload {e.FileCount} files, but only {maxAllowedFiles} Files are allowed");
+            return;
+        }
+
+        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        {
+            try
+            {
+                string newFileName = Path.ChangeExtension(
+                Path.GetRandomFileName(), 
+                Path.GetExtension(file.Name));
+
+                string path = Path.Combine(
+                    "C:\\temp", 
+                    "DataFiles", 
+                    newFileName);
+
+                Directory.CreateDirectory(Path.Combine(
+                    "C:\\temp", 
+                    "DataFiles"));
+
+                using (FileStream fs = new(path, FileMode.Create))
+                {
+                    await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
+                }
+                
+                string jsonString = await File.ReadAllTextAsync(path);
+                data = JsonSerializer.Deserialize<Data>(jsonString)!;
+            } 
+            catch (Exception ex)
+            {
+                errors.Add($"File: {file.Name} Error: {ex.Message}");
+            }
+        }
+
     }
 }
 
