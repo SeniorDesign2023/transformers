@@ -31,7 +31,7 @@ namespace HadimardGen {
 
             for(int i = 1; i <= M; i++){
                 var name = "H" + i;
-                var temp = next_matrix(previous_matrix, i);
+                var temp = kronecker_product(previous_matrix, i);
 
                 var walsh = generate_walsh(temp);
                 var valid_walsh = check_repeats(walsh);
@@ -48,7 +48,7 @@ namespace HadimardGen {
 
         }
 
-        public static int[,] next_matrix(int[,] previous_matrix, int index){
+        public static int[,] kronecker_product(int[,] previous_matrix, int index){
             int size = (int)Math.Pow(2, index);
             int[,] temp = new int[size, size];
 
