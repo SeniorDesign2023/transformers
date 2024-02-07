@@ -26,7 +26,7 @@ namespace HadimardGen {
     class Generator { 
         
         //Function to generate hadimard matrices up to HM
-        public static void gen_hadimards(int M){
+        public static void gen_hadimards(int M, string json_path){
             int [,] previous_matrix = new int[2,2] {{1, 1},{1,-1}};
 
             for(int i = 1; i <= M; i++){
@@ -40,7 +40,7 @@ namespace HadimardGen {
                     return;
                 }
 
-                create_json(temp, walsh, name);
+                create_json(temp, walsh, name, json_path);
 
                 previous_matrix = temp;
             }
@@ -84,14 +84,14 @@ namespace HadimardGen {
         }
 
         //Function to add a hadimard matrix and its walsh array to a json file
-        public static void create_json(int[,] hadimard, int[] walsh, string name){
+        public static void create_json(int[,] hadimard, int[] walsh, string name, string json_path){
             Matrix matrix = new();
 
             matrix.walsh = walsh;
             matrix.name = name;
             matrix.matrix = hadimard;
 
-            var fileName = $"hadimard_{name}.json";
+            var fileName = $"{json_path}/hadimard_{name}.json";
             Console.WriteLine(fileName);
             var jsonout= JsonConvert.SerializeObject(matrix);
             File.WriteAllText(fileName, jsonout);
