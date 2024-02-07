@@ -5,6 +5,13 @@ namespace HadimardGen {
     // Class declaration 
     using Newtonsoft.Json;
 
+    public class Options{
+        public string? alter_data{
+            get;
+            set;
+        }
+    }
+
     public class Matrix{
          public string? name{
             get;    
@@ -149,8 +156,41 @@ namespace HadimardGen {
             hadimard = get_hadimard(name);
             var matrix = hadimard.matrix;
             var walsh = hadimard.walsh;
-            
+        
+            for(int i = 0; i < input.Length; i++){
+                int sum = 0;
+                for(int j = 0; j < input.Length; j++){
 
+                    sum += input[j] * matrix[i,j];
+                    // Console.WriteLine($"Sum: {sum}");
+                }
+                Console.WriteLine($"Walsh[i]: {walsh[i]}");
+                output[walsh[i]] = sum;
+            }
+            
+            return output;
+        }
+
+        public static int[] inverse_hadimard_transform(int[] input, int size){
+            Matrix hadimard = new();
+            int[] output = new int[input.Length];
+            var N = Math.Pow(2, size);
+
+            var name = "H" + size;
+            hadimard = get_hadimard(name);
+            var matrix = hadimard.matrix;
+            var walsh = hadimard.walsh;
+
+            for(int i = 0; i < input.Length; i++){
+                int sum = 0;
+                for(int j = 0; j < input.Length; j++){
+                    sum += input[j] * matrix[j,i];
+                }
+                Console.WriteLine($"Walsh[i]: {walsh[i]}");
+                
+                output[walsh[i]] = (int)(sum/N);
+            }
+            
             return output;
         }
 
@@ -167,8 +207,22 @@ namespace HadimardGen {
          // Main Method 
         static public void Main() { 
 
-            Generator.gen_hadimards(14);
-                
+            Generator.gen_hadimards(5, "./");
+
+            var transform = Transform.hadimard_transform(new int[] {1,2,3,4,5,6,7,8}, 3);
+            var inverse = Transform.inverse_hadimard_transform(transform, 3);
+
+            Console.WriteLine("Transform:\n");
+
+            for(int i = 0; i < transform.Length; i++){
+                Console.WriteLine(transform[i]);
+            }
+            Console.WriteLine();
+            Console.WriteLine("Inverse:\n");
+            for(int i = 0; i < inverse.Length; i++){
+                Console.WriteLine(inverse[i]);
+            }
+            // Console.WriteLine(output);
         } 
     }
 } 
