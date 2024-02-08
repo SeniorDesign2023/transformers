@@ -29,15 +29,10 @@
     <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CsvHelper" Version="30.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
     <PackageReference Include="Plotly.Blazor" Version="4.1.0" />
     <PackageReference Include="Plotly.NET" Version="4.2.0" />
     <PackageReference Include="Plotly.NET.CSharp" Version="*" />
     <PackageReference Include="MudBlazor" Version="*" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Shared\API\" />
-    <Folder Include="Shared\Transforms\" />
   </ItemGroup>
 </Project>

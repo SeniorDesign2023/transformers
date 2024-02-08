@@ -1,5 +1,5 @@
 ﻿// namespace declaration 
-namespace HadimardGen { 
+namespace Client.Shared.HadamardGen { 
     
     // Class declaration 
     using Newtonsoft.Json;
