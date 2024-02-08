@@ -3,6 +3,7 @@
 @using Client.Models
 @using Client.Services
 @using System.Text.Json
+@using CsvHelper
 @inject DataService DataServ
 
 <h1>Transformers</h1>
@@ -75,9 +76,18 @@
                 {
                     await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
                 }
+
+                string fileExtension = Path.GetExtension(file.Name)?.ToLower();
+                if (fileExtension == ".json")
+                {
+                    string jsonString = await File.ReadAllTextAsync(path);
+                    data = JsonSerializer.Deserialize<Data>(jsonString)!;
+                }
+                else
+                {
+                    errors.Add($"Error: Attempting to upload incompatible file. Only json and csv are allowed");
+                }
                 
-                string jsonString = await File.ReadAllTextAsync(path);
-                data = JsonSerializer.Deserialize<Data>(jsonString)!;
             } 
             catch (Exception ex)
             {
