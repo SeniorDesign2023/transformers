@@ -3,11 +3,12 @@
 @using Client.Models
 @using Client.Services
 @using System.Text.Json
-@inject DataService DataServ
+@* inject API *@
 
 <h1>Transformers</h1>
 
 <InputFile OnChange="@UploadFile" multiple accept=".json" />
+@* Use dropbox for user to specify m 1-15? *@
 
 @if (errors.Count > 0)
 {
@@ -30,10 +31,16 @@
     private long maxFileSize = 1024 * 1024 * 3; // 3 MB
     private int maxAllowedFiles = 1;
     private List<string> errors = new();
-    public int[] data;
-    
+    private int[] data;
+    private int m;
 
-    private async Task UploadFile(InputFileChangeEventArgs e)
+    protected override void OnInitialized()
+    {
+        // Call API initialize
+        // API.initialize();
+        base.OnInitialized();
+    }
+        private async Task UploadFile(InputFileChangeEventArgs e)
     {
         errors.Clear();
 
@@ -73,7 +80,7 @@
                     }
 
                     // Call API's transform function
-                    // data = transform(path);
+                    // data = API.transform(path, m);
                     data = new int[] {1, 2, 3, 4, 5};
                 }
                 
