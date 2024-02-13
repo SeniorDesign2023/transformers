@@ -1,0 +1,21 @@
+@using Plotly.Blazor.LayoutLib
+@using Plotly.Blazor.Traces.ScatterLib
+
+<PlotlyChart @bind-Config="config" @bind-Layout="layout" @bind-Data="data" @ref="chart"/>
+
+@code {
+    PlotlyChart chart;
+    Config config = new Config();
+    Layout layout = new Layout();
+    
+    IList<ITrace> data = new List<ITrace>
+    {
+        new Scatter
+        {
+            Name = "ExampleScatter",
+            Mode = ModeFlag.Markers,
+            X = new List<object>{1, 2, 3},
+            Y = new List<object>{1, 2, 3}
+        }
+    }; 
+}
