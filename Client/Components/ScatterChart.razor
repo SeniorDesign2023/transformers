@@ -7,15 +7,26 @@
     PlotlyChart chart;
     Config config = new Config();
     Layout layout = new Layout();
+    IList<ITrace> data;
+
+    [Parameter]
+    public int[] YVals {get; set;}
     
-    IList<ITrace> data = new List<ITrace>
+    protected override void OnInitialized()
     {
-        new Scatter
+        IList<object> yValues = YVals.Cast<object>().ToList();
+        List<object> xValues = Enumerable.Range(1, yValues.Count).Select(x => (object)x).ToList();
+        data = new List<ITrace>
         {
-            Name = "ExampleScatter",
-            Mode = ModeFlag.Markers,
-            X = new List<object>{1, 2, 3},
-            Y = new List<object>{1, 2, 3}
-        }
-    }; 
+            new Scatter
+            {
+                Name = "ExampleScatter",
+                Mode = ModeFlag.Markers,
+                X = xValues,
+                Y = yValues
+            }
+        };
+
+        base.OnInitialized();
+    } 
 }

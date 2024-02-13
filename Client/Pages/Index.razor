@@ -3,7 +3,6 @@
 @using Client.Models
 @using Client.Services
 @using System.Text.Json
-@using CsvHelper
 @inject DataService DataServ
 
 <h1>Transformers</h1>
@@ -23,27 +22,16 @@
 
 @if (data != null)
 {
-    <ul class="list-group list-group-horizontal">
-        <li class="list-group-item">Test Data: </li>
-        @foreach (var el in data.Elements)
-        {
-            <li class="list-group-item">@el</li>
-        }
-    </ul>
+    <p> Graph the data </p>
+    <ScatterChart YVals="data"/>
 }
-
 
 @code {
     private long maxFileSize = 1024 * 1024 * 3; // 3 MB
     private int maxAllowedFiles = 1;
     private List<string> errors = new();
-    private Data data;
+    public int[] data;
     
-
-    @* protected override async Task OnInitializedAsync()
-    {
-        data  = await DataServ.GetDataAsync();
-    } *@
 
     private async Task UploadFile(InputFileChangeEventArgs e)
     {
@@ -72,20 +60,21 @@
                     "C:\\temp", 
                     "DataFiles"));
 
-                using (FileStream fs = new(path, FileMode.Create))
-                {
-                    await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
-                }
-
                 string fileExtension = Path.GetExtension(file.Name)?.ToLower();
-                if (fileExtension == ".json")
+                if (fileExtension != ".json")
                 {
-                    string jsonString = await File.ReadAllTextAsync(path);
-                    data = JsonSerializer.Deserialize<Data>(jsonString)!;
+                    errors.Add($"Error: Attempting to upload incompatible file. Only json and csv are allowed");
                 }
                 else
                 {
-                    errors.Add($"Error: Attempting to upload incompatible file. Only json and csv are allowed");
+                    using (FileStream fs = new(path, FileMode.Create))
+                    {
+                        await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
+                    }
+
+                    // Call API's transform function
+                    // data = transform(path);
+                    data = new int[] {1, 2, 3, 4, 5};
                 }
                 
             } 
