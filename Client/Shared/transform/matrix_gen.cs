@@ -32,6 +32,7 @@ namespace Client.Shared.HadamardGen {
     class Generator { 
         
         //Function to generate hadimard matrices up to HM
+        //M is the number of matricies to generate
         public static void gen_hadimards(int M, string json_path){
             int [,] previous_matrix = new int[2,2] {{1, 1},{1,-1}};
 
@@ -163,7 +164,7 @@ namespace Client.Shared.HadamardGen {
                     sum += input[j] * matrix[i,j];
                     // Console.WriteLine($"Sum: {sum}");
                 }
-                Console.WriteLine($"Walsh[i]: {walsh[i]}");
+                // Console.WriteLine($"Walsh[i]: {walsh[i]}");
                 output[walsh[i]] = sum;
             }
             
@@ -185,7 +186,7 @@ namespace Client.Shared.HadamardGen {
                 for(int j = 0; j < input.Length; j++){
                     sum += input[j] * matrix[j,i];
                 }
-                Console.WriteLine($"Walsh[i]: {walsh[i]}");
+                // Console.WriteLine($"Walsh[i]: {walsh[i]}");
                 
                 output[walsh[i]] = (int)(sum/N);
             }
@@ -208,8 +209,9 @@ namespace Client.Shared.HadamardGen {
 
             Generator.gen_hadimards(5, "./");
 
-            var transform = Transform.hadimard_transform(new int[] {1,2,3,4,5,6,7,8}, 3);
-            var inverse = Transform.inverse_hadimard_transform(transform, 3);
+            var size = 4;
+            var transform = Transform.hadimard_transform(new int[] {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}, size);
+            var inverse = Transform.inverse_hadimard_transform(transform, size);
 
             Console.WriteLine("Transform:\n");
 
