@@ -30,7 +30,7 @@ namespace Client.Shared.API
             return Transform.hadimard_transform(list, size);
         }
 
-        public int[] forwardTransform(int[] list, bool truncate, int percent)
+        public int[] forwardHadamardTransform(int[] list, bool truncate, int percent)
         {
             int len = list.Length;
             int size;
@@ -58,6 +58,14 @@ namespace Client.Shared.API
             Array.Resize(ref ret, (int)(size * (1 - percentage)));
 
             return ret;
+        }
+
+        public int[] inverseHadamardTransform(int[] list)
+        {
+            int len = list.Length;
+            int size = (int)Floor(Log(len, 2));
+
+            return Transform.inverse_hadimard_transform(list, size);
         }
     }
 }
