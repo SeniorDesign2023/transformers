@@ -11,10 +11,10 @@ namespace Client.Shared.API
     public class API
     {
         // This function generates the inital Hadamard matrices
-        public void initialize()
+        public void initialize(string path, int m)
         {
-            string path = "C:\\Users\\fmart\\Senior_Design\\transformers\\Client";
-            Generator.gen_hadimards(10, path);
+            //string path = "C:\\Users\\fmart\\Senior_Design\\transformers\\Client";
+            Generator.gen_hadimards(m, path);
         }
 
         // This function will eventually return a list of integers so we can graph them
