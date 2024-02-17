@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Client.Shared.HadamardGen;
+using static System.Math;
 
 namespace Client.Shared.API
 {
@@ -15,9 +16,14 @@ namespace Client.Shared.API
         }
 
         // This function will eventually return a list of integers so we can graph them
-        public void transform(string path, int m)
+        public int[] transformPow2(int[] list)
         {
-            
+            int len = list.Length;
+            int size = (int)Floor(Log(len, 2));
+
+            var transformer = new Transform();
+
+            return Transform.hadimard_transform(list, size);
         }
     }
 }
