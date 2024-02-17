@@ -1,4 +1,7 @@
-﻿@page "/"
+﻿@using Client.Services
+@inject SettingsService Settings
+
+@page "/"
 
 <h1>Transformers</h1>
 
@@ -9,7 +12,12 @@
 @code {
     [Inject] private NavigationManager NavMan {get; set;}
 
-    private void GoToInput()
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+        private void GoToInput()
     {
         NavMan.NavigateTo("/input");
     }
