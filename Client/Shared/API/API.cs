@@ -11,19 +11,13 @@ namespace Client.Shared.API
 {
     public class API
     {
-        private readonly IConfiguration config;
-
-        public API(IConfiguration configuration)
-        {
-            config = configuration;
-        }
 
         // This function generates the inital Hadamard matrices
         public void initialize()
         {
             //string path = "C:\\Users\\fmart\\Senior_Design\\transformers\\Client";
-            string path = config.GetValue<string>("Path");
-            int m = config.GetValue<int>("M");
+            string path = "";
+            int m = 0;
             Generator.gen_hadimards(m, path);
         }
 

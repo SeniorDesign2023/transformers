@@ -34,5 +34,8 @@
     <PackageReference Include="Plotly.NET" Version="4.2.0"/>
     <PackageReference Include="Plotly.NET.CSharp" Version="*"/>
     <PackageReference Include="MudBlazor" Version="*"/>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="*"/>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="*"/>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="*"/>
   </ItemGroup>
 </Project>
