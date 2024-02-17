@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Client.Services;
 using Client.Shared.API;
+using Microsoft.Extensions.Configuration;
 
 namespace Client
 {
@@ -17,6 +18,13 @@ namespace Client
                 });
 
             builder.Services.AddMauiBlazorWebView();
+            var configuration = new ConfigurationBuilder()
+                .AddInMemoryCollection(new Dictionary<string, string?>()
+                {
+                    ["Path"] = "",
+                    ["M"] = "0",
+                })
+                .Build();
 
 #if DEBUG
 		builder.Services.AddBlazorWebViewDeveloperTools();

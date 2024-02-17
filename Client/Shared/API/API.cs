@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Client.Shared.HadamardGen;
 using static System.Math;
 
@@ -10,10 +11,19 @@ namespace Client.Shared.API
 {
     public class API
     {
+        private readonly IConfiguration config;
+
+        public API(IConfiguration configuration)
+        {
+            config = configuration;
+        }
+
         // This function generates the inital Hadamard matrices
-        public void initialize(string path, int m)
+        public void initialize()
         {
             //string path = "C:\\Users\\fmart\\Senior_Design\\transformers\\Client";
+            string path = config.GetValue<string>("Path");
+            int m = config.GetValue<int>("M");
             Generator.gen_hadimards(m, path);
         }
 
@@ -22,8 +32,6 @@ namespace Client.Shared.API
         {
             int len = list.Length;
             int size = (int)Floor(Log(len, 2));
-
-            var transformer = new Transform();
 
             return Transform.hadimard_transform(list, size);
         }
