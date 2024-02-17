@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Client.Shared.HadamardGen;
 using static System.Math;
+using Client.Services;
+using Android.Provider;
 
 namespace Client.Shared.API
 {
@@ -16,8 +18,9 @@ namespace Client.Shared.API
         public void initialize()
         {
             //string path = "C:\\Users\\fmart\\Senior_Design\\transformers\\Client";
-            string path = "";
-            int m = 0;
+            var settings = new SettingsService();
+            string path = settings.GetPath();
+            int m = settings.GetM();
             Generator.gen_hadimards(m, path);
         }
 
