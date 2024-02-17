@@ -1,0 +1,106 @@
+@page "/upload"
+
+@using Client.Models
+@using Client.Services
+@using System.Text.Json
+@* inject API *@
+
+<h1>Upload Data</h1>
+
+<div>
+    <button @onclick="GoToHome">Home</button>
+</div>
+
+<InputFile OnChange="@UploadFile" multiple accept=".json" />
+@* Use dropbox for user to specify m 1-15? *@
+
+@if (errors.Count > 0)
+{
+    <h2>Errors</h2>
+    <ul class="text-danger">
+        @foreach (var error in errors)
+        {
+            <li>@error</li>
+        }
+    </ul>
+}
+
+@if (data != null)
+{
+    <p> Graph the data </p>
+    <ScatterChart YVals="data"/>
+}
+
+@code {
+    private long maxFileSize = 1024 * 1024 * 3; // 3 MB
+    private int maxAllowedFiles = 1;
+    private List<string> errors = new();
+    private int[] data;
+    [Inject] private NavigationManager NavMan { get; set; }
+
+    private void GoToHome()
+    {
+        NavMan.NavigateTo("/");
+    }
+
+    protected override void OnInitialized()
+    {
+        // Call API initialize
+        // API.initialize();
+        base.OnInitialized();
+    }
+        private async Task UploadFile(InputFileChangeEventArgs e)
+    {
+        errors.Clear();
+
+        if (e.FileCount > maxAllowedFiles)
+        {
+            errors.Add($"Error: Attempting to upload {e.FileCount} files, but only {maxAllowedFiles} Files are allowed");
+            return;
+        }
+
+        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        {
+            try
+            {
+                string newFileName = Path.ChangeExtension(
+                Path.GetRandomFileName(), 
+                Path.GetExtension(file.Name));
+
+                string path = Path.Combine(
+                    "C:\\temp", 
+                    "DataFiles", 
+                    newFileName);
+
+                Directory.CreateDirectory(Path.Combine(
+                    "C:\\temp", 
+                    "DataFiles"));
+
+                string fileExtension = Path.GetExtension(file.Name)?.ToLower();
+                if (fileExtension != ".json")
+                {
+                    errors.Add($"Error: Attempting to upload incompatible file. Only json and csv are allowed");
+                }
+                else
+                {
+                    using (FileStream fs = new(path, FileMode.Create))
+                    {
+                        await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
+                    }
+
+                    // Call API's transform function
+                    // data = API.transform(path, m);
+                    data = new int[] {1, 2, 3, 4, 5};
+                }
+                
+            } 
+            catch (Exception ex)
+            {
+                errors.Add($"File: {file.Name} Error: {ex.Message}");
+            }
+        }
+
+    }
+}
+
+

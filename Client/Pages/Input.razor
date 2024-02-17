@@ -1,0 +1,48 @@
+@page "/input"
+
+<h1>Input Data</h1>
+
+<button @onclick="GoToHome">Home</button>
+
+<div>
+    <label for="inputData">Enter your data:</label>
+    <input id="inputData" @bind="dataString" />
+    <button @onclick="SendData">Submit</button>
+</div>
+
+<div>
+    <label for="truncData">Truncate Data:</label>
+    <input type="checkbox" @bind="truncate"/>
+</div>
+
+<div>
+    <label for="compPercent">Compression Percentage (0-100):</label>
+    <input id="compPercent" type="number" @bind="compression" min="0" max="100" />
+</div>
+
+@if (data != null && data.Any())
+{
+    <p> Graph the data </p>
+    <ScatterChart YVals="data" @key="data" />
+}
+
+@code {
+    private string dataString;
+    private int[] data;
+    private bool truncate = false;
+    private int compression = 0;
+    [Inject] private NavigationManager NavMan { get; set; }
+
+    private void GoToHome()
+    {
+        NavMan.NavigateTo("/");
+    }
+
+    private void SendData()
+    {
+        data = dataString.Split(',').Select(s => int.TryParse(s, out int result) ? result : 0).ToArray();
+        Console.WriteLine(truncate);
+        Console.WriteLine(compression);
+        StateHasChanged();
+    }
+}

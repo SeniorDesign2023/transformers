@@ -204,26 +204,26 @@ namespace Client.Shared.HadamardGen {
     }
 
     class Program{
-         // Main Method 
-        static public void Main() { 
+         // Main Method
+        // static public void Main() { 
 
-            Generator.gen_hadimards(5, "./");
+        //     Generator.gen_hadimards(5, "./");
 
-            var size = 4;
-            var transform = Transform.hadimard_transform(new int[] {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}, size);
-            var inverse = Transform.inverse_hadimard_transform(transform, size);
+        //     var size = 4;
+        //     var transform = Transform.hadimard_transform(new int[] {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}, size);
+        //     var inverse = Transform.inverse_hadimard_transform(transform, size);
 
-            Console.WriteLine("Transform:\n");
+        //     Console.WriteLine("Transform:\n");
 
-            for(int i = 0; i < transform.Length; i++){
-                Console.WriteLine(transform[i]);
-            }
-            Console.WriteLine();
-            Console.WriteLine("Inverse:\n");
-            for(int i = 0; i < inverse.Length; i++){
-                Console.WriteLine(inverse[i]);
-            }
-            // Console.WriteLine(output);
-        } 
+        //     for(int i = 0; i < transform.Length; i++){
+        //         Console.WriteLine(transform[i]);
+        //     }
+        //     Console.WriteLine();
+        //     Console.WriteLine("Inverse:\n");
+        //     for(int i = 0; i < inverse.Length; i++){
+        //         Console.WriteLine(inverse[i]);
+        //     }
+        //     // Console.WriteLine(output);
+        // }
     }
 } 
