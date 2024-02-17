@@ -30,6 +30,7 @@ namespace Client.Shared.API
             return Transform.hadimard_transform(list, size);
         }
 
+        // Actually just a Walsh transform, assuming will be renamed in engine.
         public int[] forwardHadamardTransform(int[] list, bool truncate, int percent)
         {
             int len = list.Length;
@@ -60,6 +61,7 @@ namespace Client.Shared.API
             return ret;
         }
 
+        // Also Walsh as well, will be renamed
         public int[] inverseHadamardTransform(int[] list)
         {
             int len = list.Length;
@@ -67,5 +69,6 @@ namespace Client.Shared.API
 
             return Transform.inverse_hadimard_transform(list, size);
         }
+
     }
 }
