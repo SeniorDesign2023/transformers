@@ -13,6 +13,8 @@ namespace Client.Shared.API
         // This function generates the inital Hadamard matrices
         public void initialize()
         {
+            string path = "C:\\Users\\fmart\\Senior_Design\\transformers\\Client";
+            Generator.gen_hadimards(10, path);
         }
 
         // This function will eventually return a list of integers so we can graph them

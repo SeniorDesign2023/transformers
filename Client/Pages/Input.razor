@@ -1,3 +1,6 @@
+@using Client.Shared.API;
+@inject API APIServe
+
 @page "/input"
 
 <h1>Input Data</h1>
@@ -20,18 +23,25 @@
     <input id="compPercent" type="number" @bind="compression" min="0" max="100" />
 </div>
 
-@if (data != null && data.Any())
+@if (outputData != null && outputData.Any())
 {
     <p> Graph the data </p>
-    <ScatterChart YVals="data" @key="data" />
+    <ScatterChart YVals="outputData" @key="outputData" />
 }
 
 @code {
     private string dataString;
-    private int[] data;
+    private int[] inputData;
+    private int[] outputData;
     private bool truncate = false;
     private int compression = 0;
     [Inject] private NavigationManager NavMan { get; set; }
+
+    protected override void OnInitialized()
+    {
+        APIServe.initialize();
+        base.OnInitialized();
+    }
 
     private void GoToHome()
     {
@@ -40,9 +50,8 @@
 
     private void SendData()
     {
-        data = dataString.Split(',').Select(s => int.TryParse(s, out int result) ? result : 0).ToArray();
-        Console.WriteLine(truncate);
-        Console.WriteLine(compression);
+        inputData = dataString.Split(',').Select(s => int.TryParse(s, out int result) ? result : 0).ToArray();
+        outputData = APIServe.transformPow2(inputData);
         StateHasChanged();
     }
 }
