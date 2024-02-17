@@ -4,6 +4,13 @@ namespace Client.Shared.HadamardGen {
     // Class declaration 
     using Newtonsoft.Json;
 
+    public class Options{
+        public string? alter_data{
+            get;
+            set;
+        }
+    }
+
     public class Matrix{
          public string? name{
             get;    
@@ -14,113 +21,209 @@ namespace Client.Shared.HadamardGen {
             get;
             set;
         }
-    }
 
-    public class Matrices{
-        public IList<Matrix>? Hadamard {get; set;} = new List<Matrix>();
-        public int number_of_matrices {get; set;} = 0;
-       
+        public int[]? walsh{
+            get;
+            set;
+        }
     }
     
     //Class to generate and display hadimard matrices
     class Generator { 
         
-        //Function to find and return the hadimard matrix of size M from the JSON file
-        //If the matrix is not found, it will return the last generated hadimard matrix
-        public static int[,] find_matrix(int M){
-            //TODO: Search JSON file for desired matrix and return in correct form
-            return null;
-        }
+        //Function to generate hadimard matrices up to HM
+        //M is the number of matricies to generate
+        public static void gen_hadimards(int M, string json_path){
+            int [,] previous_matrix = new int[2,2] {{1, 1},{1,-1}};
 
-       
-        public static void generate(int[,] previous_matrix, int start, int M){
-            Matrices matrices = new();
-            if(M == 1){
-                display_matrix(previous_matrix, 2);
-                return;
-            }else{
-                //Creates and displays each hadimard matrix up until HM
-                for(int i = start; i <= M; i++){
-                    Console.WriteLine("Here " + i);
-                    Console.WriteLine();
-                    int size = (int)Math.Pow(2, i);
-                    int[,] temp = new int[size, size];
+            for(int i = 1; i <= M; i++){
+                var name = "H" + i;
+                var temp = kronecker_product(previous_matrix, i);
 
-                    //Fills the top left quadrant of the matrix with the previous matrix
-                    for(int j = 0; j < size/2; j++){
-                        for(int k = 0; k < size/2; k++){
-                            temp[j,k] = previous_matrix[j,k];
-                        }
-                    }
-
-                    //Fills the top right quadrant of the matrix with the previous matrix
-                    for(int j = 0; j < size/2; j++){
-                        for(int k = size/2; k < size; k++){
-                            temp[j,k] = previous_matrix[j,k - size/2];
-                        }
-                    }
-
-                    //Fills the bottom left quadrant of the matrix with the previous matrix
-                    for(int j = size/2; j < size; j++){
-                        for(int k = 0; k < size/2; k++){
-                            temp[j,k] = previous_matrix[j - size/2,k];
-                        }
-                    }
-
-                    //Fills the bottom right quadrant of the matrix with the inverse of the previous matrix
-                    for(int j = size/2; j < size; j++){
-                        for(int k = size/2; k < size; k++){
-                            temp[j,k] = -1 * previous_matrix[j - size/2,k - size/2];
-                        }
-                    }
-                    matrices.number_of_matrices++;
-                    //display_matrix(temp, size);
-                    matrices.Hadamard.Add(new Matrix(){name = "H" + i, matrix = temp});
-                    //Console.WriteLine();
-
-                    previous_matrix = temp;
-
+                var walsh = generate_walsh(temp);
+                var valid_walsh = check_repeats(walsh);
+                if (valid_walsh){
+                    Console.WriteLine("Invalid walsh"); 
+                    return;
                 }
 
+                create_json(temp, walsh, name, json_path);
+
+                previous_matrix = temp;
             }
-            //var output = JsonSerializer.Serialize(matrices);
-            var jsonout= JsonConvert.SerializeObject(matrices);
-            File.WriteAllText("hadimard_matrices.json", jsonout);
-            //Console.WriteLine(jsonout);
+
+
         }
 
-        public static void display_matrix(int[,] matrix, int size){
-            // Displaying the final hadamard matrix
-                for (int k = 0; k < size; k++) {
-                    for (int j = 0; j < size; j++) {
-                        Console.Write(matrix[k,j] + " ");
-                    }
-                    Console.WriteLine();
+        public static int[,] kronecker_product(int[,] previous_matrix, int index){
+            int size = (int)Math.Pow(2, index);
+            int[,] temp = new int[size, size];
+
+            //Fills the top left quadrant of the matrix with the previous matrix
+            for(int j = 0; j < size/2; j++){
+                for(int k = 0; k < size/2; k++){
+                    temp[j,k] = previous_matrix[j,k];
                 }
+            }
+
+            //Fills the top right quadrant of the matrix with the previous matrix
+            for(int j = 0; j < size/2; j++){
+                for(int k = size/2; k < size; k++){
+                    temp[j,k] = previous_matrix[j,k - size/2];
+                }
+            }
+
+            //Fills the bottom left quadrant of the matrix with the previous matrix
+            for(int j = size/2; j < size; j++){
+                for(int k = 0; k < size/2; k++){
+                    temp[j,k] = previous_matrix[j - size/2,k];
+                }
+            }
+
+            //Fills the bottom right quadrant of the matrix with the inverse of the previous matrix
+            for(int j = size/2; j < size; j++){
+                for(int k = size/2; k < size; k++){
+                    temp[j,k] = -1 * previous_matrix[j - size/2,k - size/2];
+                }
+            }
+
+            return temp;
+        }
+
+        //Function to add a hadimard matrix and its walsh array to a json file
+        public static void create_json(int[,] hadimard, int[] walsh, string name, string json_path){
+            Matrix matrix = new();
+
+            matrix.walsh = walsh;
+            matrix.name = name;
+            matrix.matrix = hadimard;
+
+            var fileName = $"{json_path}/hadimard_{name}.json";
+            Console.WriteLine(fileName);
+            var jsonout = JsonConvert.SerializeObject(matrix);
+            File.WriteAllText(fileName, jsonout);
+            Console.WriteLine();
+            
+        }
+        
+        //Function that generates an array that correlates the number of flips in each hadimard row
+        public static int[] generate_walsh(int[,] matrix){
+            int[] walsh = new int[matrix.GetLength(0)];
+            for(int i = 0; i < matrix.GetLength(0); i++){
+                int flips = 0;
+                var prev = 0;
+                for(int j = 0; j < matrix.GetLength(1); j++){
+                    if(j == 0){
+                        prev = matrix[i,0];
+                    }else{
+                        prev = matrix[i,j-1];
+                    }
+
+                    if(matrix[i,j] != prev){
+                        flips++;
+                    }
+                }
+
+                walsh[i] = flips;
+            }
+
+            return walsh;
+            
+        }
+
+        //Function to check for repeated numbers in an array
+        public static bool check_repeats(int[] array){
+            for(int i = 0; i < array.Length; i++){
+                for(int j = i + 1; j < array.Length; j++){
+                    if(array[i] == array[j]){
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
     }
-    
-    //Class to create and work with JSON file
-    public class JSON{
-        public static void create_JSON(){
-            string fileName = "hadimard_matrices.json";
-            string jsonString = File.ReadAllText(fileName);
-            Matrices matrices = JsonConvert.DeserializeObject<Matrices>(jsonString);
-            Console.WriteLine(matrices.number_of_matrices);
 
+    public class Transform{
+
+        public static int[] hadimard_transform(int[] input, int size){
+            Matrix hadimard = new();
+            int[] output = new int[input.Length];
+
+            var name = "H" + size;
+            hadimard = get_hadimard(name);
+            var matrix = hadimard.matrix;
+            var walsh = hadimard.walsh;
+        
+            for(int i = 0; i < input.Length; i++){
+                int sum = 0;
+                for(int j = 0; j < input.Length; j++){
+
+                    sum += input[j] * matrix[i,j];
+                    // Console.WriteLine($"Sum: {sum}");
+                }
+                // Console.WriteLine($"Walsh[i]: {walsh[i]}");
+                output[walsh[i]] = sum;
+            }
+            
+            return output;
         }
 
+        public static int[] inverse_hadimard_transform(int[] input, int size){
+            Matrix hadimard = new();
+            int[] output = new int[input.Length];
+            var N = Math.Pow(2, size);
+
+            var name = "H" + size;
+            hadimard = get_hadimard(name);
+            var matrix = hadimard.matrix;
+            var walsh = hadimard.walsh;
+
+            for(int i = 0; i < input.Length; i++){
+                int sum = 0;
+                for(int j = 0; j < input.Length; j++){
+                    sum += input[j] * matrix[j,i];
+                }
+                // Console.WriteLine($"Walsh[i]: {walsh[i]}");
+                
+                output[walsh[i]] = (int)(sum/N);
+            }
+            
+            return output;
+        }
+
+        public static Matrix get_hadimard(string name){
+            Matrix matrix = new();
+            var fileName = $"./hadimard_{name}.json";
+            var json = File.ReadAllText(fileName);
+            matrix = JsonConvert.DeserializeObject<Matrix>(json);
+            return matrix;
+        }
     }
 
     class Program{
-         // Main Method 
+         // Main Method
         // static public void Main() { 
-        //     int[,] base_hadamard = new int[4, 4] {{1, 1,1,1}, {1, -1,1,-1}, {1, 1,-1,-1}, {1, -1,-1,1}};
 
-                
-        //     Generator.generate(base_hadamard,1,14);
-                
-        // } 
+        //     Generator.gen_hadimards(5, "./");
+
+        //     var size = 4;
+        //     var transform = Transform.hadimard_transform(new int[] {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}, size);
+        //     var inverse = Transform.inverse_hadimard_transform(transform, size);
+
+        //     Console.WriteLine("Transform:\n");
+
+        //     for(int i = 0; i < transform.Length; i++){
+        //         Console.WriteLine(transform[i]);
+        //     }
+        //     Console.WriteLine();
+        //     Console.WriteLine("Inverse:\n");
+        //     for(int i = 0; i < inverse.Length; i++){
+        //         Console.WriteLine(inverse[i]);
+        //     }
+        //     // Console.WriteLine(output);
+        // }
     }
 } 
