@@ -29,5 +29,46 @@ namespace Client.Shared.API
 
             return Transform.hadimard_transform(list, size);
         }
+
+        // Actually just a Walsh transform, assuming will be renamed in engine.
+        public int[] forwardHadamardTransform(int[] list, bool truncate, int percent)
+        {
+            int len = list.Length;
+            int size;
+            float percentage = percent / (float)100;
+            int[] tmp = new int[len];
+            //creating a deep copy
+            Array.Copy(list, tmp, len);
+
+            // checking if we are truncating or not
+            if (truncate)
+            {
+                size = (int)Floor(Log(len, 2));
+            }
+            else
+            {
+                size = (int)Ceiling(Log(len, 2));
+            }
+            // resizing the array to the calculated truncation
+            Array.Resize(ref tmp, size);
+
+            // actually doing transform
+            int[] ret = Transform.hadimard_transform(tmp, size);
+
+            // resizing based on percentage
+            Array.Resize(ref ret, (int)(size * (1 - percentage)));
+
+            return ret;
+        }
+
+        // Also Walsh as well, will be renamed
+        public int[] inverseHadamardTransform(int[] list)
+        {
+            int len = list.Length;
+            int size = (int)Floor(Log(len, 2));
+
+            return Transform.inverse_hadimard_transform(list, size);
+        }
+
     }
 }
