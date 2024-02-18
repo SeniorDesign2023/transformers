@@ -86,9 +86,6 @@
                     {
                         await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
                     }
-
-                    // Call API's transform function
-                    // data = API.transform(path, m);
                     data = new int[] {1, 2, 3, 4, 5};
                 }
                 

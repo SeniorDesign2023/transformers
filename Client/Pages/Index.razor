@@ -1,4 +1,9 @@
-﻿@page "/"
+﻿@using Client.Services
+@using Client.Shared.API
+@inject API APIServ
+@inject SettingsService Settings
+
+@page "/"
 
 <h1>Transformers</h1>
 
@@ -9,7 +14,13 @@
 @code {
     [Inject] private NavigationManager NavMan {get; set;}
 
-    private void GoToInput()
+
+    protected override void OnInitialized()
+    {
+        APIServ.initialize();
+        base.OnInitialized();
+    }
+        private void GoToInput()
     {
         NavMan.NavigateTo("/input");
     }

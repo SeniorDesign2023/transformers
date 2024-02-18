@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Client.Services;
 using Client.Shared.API;
 
 namespace Client
@@ -23,7 +24,7 @@ namespace Client
 #endif
 
             builder.Services.AddSingleton<API>();
-
+            builder.Services.AddSingleton<SettingsService>();
             return builder.Build();
         }
     }
