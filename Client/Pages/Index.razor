@@ -1,4 +1,6 @@
 ﻿@using Client.Services
+@using Client.Shared.API
+@inject API APIServ
 @inject SettingsService Settings
 
 @page "/"
@@ -15,6 +17,7 @@
 
     protected override void OnInitialized()
     {
+        APIServ.initialize();
         base.OnInitialized();
     }
         private void GoToInput()

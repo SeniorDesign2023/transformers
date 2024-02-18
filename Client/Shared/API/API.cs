@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Client.Shared.HadamardGen;
 using static System.Math;
 using Client.Services;
-using Android.Provider;
+
 
 namespace Client.Shared.API
 {
@@ -20,7 +20,9 @@ namespace Client.Shared.API
             //string path = "C:\\Users\\fmart\\Senior_Design\\transformers\\Client";
             var settings = new SettingsService();
             string path = settings.GetPath();
+            Console.WriteLine(path);
             int m = settings.GetM();
+            Console.WriteLine(m);
             Generator.gen_hadimards(m, path);
         }
 
@@ -53,13 +55,13 @@ namespace Client.Shared.API
                 size = (int)Ceiling(Log(len, 2));
             }
             // resizing the array to the calculated truncation
-            Array.Resize(ref tmp, size);
+            Array.Resize(ref tmp, (int)Math.Pow(2, size));
 
             // actually doing transform
             int[] ret = Transform.hadimard_transform(tmp, size);
 
             // resizing based on percentage
-            Array.Resize(ref ret, (int)(size * (1 - percentage)));
+            Array.Resize(ref ret, (int)(Math.Pow(2,size) * (1 - percentage)));
 
             return ret;
         }
