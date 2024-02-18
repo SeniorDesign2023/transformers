@@ -11,7 +11,6 @@
 </div>
 
 <InputFile OnChange="@UploadFile" multiple accept=".json" />
-@* Use dropbox for user to specify m 1-15? *@
 
 @if (errors.Count > 0)
 {
@@ -44,11 +43,9 @@
 
     protected override void OnInitialized()
     {
-        // Call API initialize
-        // API.initialize();
         base.OnInitialized();
     }
-        private async Task UploadFile(InputFileChangeEventArgs e)
+    private async Task UploadFile(InputFileChangeEventArgs e)
     {
         errors.Clear();
 

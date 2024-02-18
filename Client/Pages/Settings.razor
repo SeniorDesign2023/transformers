@@ -1,0 +1,30 @@
+@using Client.Services
+@using Client.Shared.API
+@inject API APIServ
+@inject SettingsService SettingsServe
+
+@page "/settings"
+
+<h1>Settings</h1>
+
+<div>
+    <label for="numMatrices">Number of Hadimards (1-15):</label>
+    <input id="numMatrices" type="number" @bind="matrices" min="1" max="15" />
+    <button @onclick="ChangeSettings">Submit</button>
+</div>
+
+
+@code {
+    private int matrices = 1;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    private void ChangeSettings()
+    {
+        SettingsServe.SetSettings(m: matrices);
+        APIServ.initialize();
+    }
+
+}

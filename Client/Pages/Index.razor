@@ -1,7 +1,7 @@
 ﻿@using Client.Services
 @using Client.Shared.API
 @inject API APIServ
-@inject SettingsService Settings
+@inject SettingsService SettingsServe
 
 @page "/"
 
@@ -10,6 +10,8 @@
 <button @onclick="GoToInput">Input Data</button>
 
 <button @onclick="GoToUpload">Upload Data</button>
+
+<button @onclick="GoToSettings">Settings</button>
 
 @code {
     [Inject] private NavigationManager NavMan {get; set;}
@@ -28,6 +30,11 @@
     private void GoToUpload()
     {
         NavMan.NavigateTo("/upload");
+    }
+
+    private void GoToSettings()
+    {
+        NavMan.NavigateTo("/settings");
     }
 }
 
