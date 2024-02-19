@@ -23,6 +23,10 @@ namespace Client
 		builder.Logging.AddDebug();
 #endif
 
+#if WINDOWS
+		builder.Services.AddTransient<IFolderPicker, Platforms.Windows.FolderPicker>();
+#endif
+
             builder.Services.AddSingleton<API>();
             builder.Services.AddSingleton<SettingsService>();
             return builder.Build();

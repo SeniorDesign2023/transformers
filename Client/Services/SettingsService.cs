@@ -13,7 +13,7 @@ namespace Client.Services
                 var settings = new Settings
                 {
                     Path = ".\\",
-                    M = 1
+                    M = 5
                 };
                 string json = JsonSerializer.Serialize(settings);
                 File.WriteAllText(settingsFile, json); 
@@ -38,8 +38,18 @@ namespace Client.Services
             return settings.M;
         }
 
-        public void SetSettings(string path = ".\\", int m = 1)
+        public void SetSettings(string path = null, int m = -1)
         {
+            if (string.IsNullOrEmpty(path))
+            {
+                path = GetPath();
+            }
+
+            if (m < 1)
+            {
+                m = GetM();
+            }
+
             var settings = new Settings
             {
                 Path = path,
