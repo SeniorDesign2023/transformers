@@ -1,8 +1,7 @@
 @page "/upload"
 
-@using Client.Models
-@using System.Text.Json
-@* inject API *@
+@using Client.Shared.API;
+@inject API APIServe
 
 <h1>Upload Data</h1>
 
@@ -10,7 +9,20 @@
     <button @onclick="GoToHome">Home</button>
 </div>
 
-<InputFile OnChange="@UploadFile" multiple accept=".json" />
+<div>
+    <InputFile OnChange="@UploadFile" multiple accept=".json" />
+</div>
+
+<div>
+    <label for="truncData">Truncate Data:</label>
+    <input type="checkbox" @bind="truncate"/>
+</div>
+
+<div>
+    <label for="compPercent">Compression Percentage (0-100):</label>
+    <input id="compPercent" type="number" @bind="compression" min="0" max="100" />
+    <button @onclick="SendData">Submit</button>
+</div>
 
 @if (errors.Count > 0)
 {
@@ -23,28 +35,41 @@
     </ul>
 }
 
-@if (data != null)
+@if (outputData != null)
 {
     <p> Graph the data </p>
-    <ScatterChart YVals="data"/>
+    <ScatterChart YVals="outputData" @key="outputData" />
 }
 
 @code {
     private long maxFileSize = 1024 * 1024 * 3; // 3 MB
     private int maxAllowedFiles = 1;
     private List<string> errors = new();
-    private int[] data;
+    private string path = ".\\";
+    private bool truncate = false;
+    private int compression = 0;
+    private int[] outputData;
     [Inject] private NavigationManager NavMan { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
 
     private void GoToHome()
     {
         NavMan.NavigateTo("/");
     }
 
-    protected override void OnInitialized()
+    private void SendData()
     {
-        base.OnInitialized();
+        @* outputData = APIServe.forwardHadamardTransform(path, truncate, compression); *@
+        @* StateHasChanged(); *@
+        Console.WriteLine(path);
+        Console.WriteLine(truncate);
+        Console.WriteLine(compression);
     }
+
     private async Task UploadFile(InputFileChangeEventArgs e)
     {
         errors.Clear();
@@ -63,7 +88,7 @@
                 Path.GetRandomFileName(), 
                 Path.GetExtension(file.Name));
 
-                string path = Path.Combine(
+                string filepath = Path.Combine(
                     "C:\\temp", 
                     "DataFiles", 
                     newFileName);
@@ -73,17 +98,20 @@
                     "DataFiles"));
 
                 string fileExtension = Path.GetExtension(file.Name)?.ToLower();
+
                 if (fileExtension != ".json")
                 {
                     errors.Add($"Error: Attempting to upload incompatible file. Only json and csv are allowed");
                 }
                 else
                 {
-                    using (FileStream fs = new(path, FileMode.Create))
+                    using (FileStream fs = new(filepath, FileMode.Create))
                     {
                         await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
                     }
-                    data = new int[] {1, 2, 3, 4, 5};
+
+                    path = filepath;
+                    @* data = new int[] {1, 2, 3, 4, 5}; *@
                 }
                 
             } 
@@ -94,6 +122,7 @@
         }
 
     }
+    
 }
 
 
