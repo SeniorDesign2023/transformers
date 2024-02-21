@@ -162,10 +162,9 @@ namespace Client.Shared.HadamardGen {
                 for(int j = 0; j < input.Length; j++){
 
                     sum += input[j] * matrix[i,j];
-                    // Console.WriteLine($"Sum: {sum}");
                 }
-                // Console.WriteLine($"Walsh[i]: {walsh[i]}");
-                output[walsh[i]] = sum;
+                // output[walsh[i]] = sum;
+                output[i] = sum;
             }
             
             return output;
@@ -186,8 +185,53 @@ namespace Client.Shared.HadamardGen {
                 for(int j = 0; j < input.Length; j++){
                     sum += input[j] * matrix[j,i];
                 }
-                // Console.WriteLine($"Walsh[i]: {walsh[i]}");
                 
+                // output[walsh[i]] = (int)(sum/N);
+                output[i] = (int)(sum/N);
+            }
+            
+            return output;
+        }
+
+
+        public static int[] walshTransform(int[] input, int size){
+            Matrix hadamard = new();
+            int[] output = new int[input.Length];
+
+            var name = "H" + size;
+            hadamard = getHadamard(name);
+            var matrix = hadamard.matrix;
+            var walsh = hadamard.walsh;
+        
+            for(int i = 0; i < input.Length; i++){
+                int sum = 0;
+                for(int j = 0; j < input.Length; j++){
+
+                    sum += input[j] * matrix[i,j];
+                }
+                output[walsh[i]] = sum;
+            }
+            
+            return output;
+        }
+
+        public static int[] inverseWalshTransform(int[] input, int size){
+            Matrix hadamard = new();
+            int[] output = new int[input.Length];
+            var N = Math.Pow(2, size);
+
+            var name = "H" + size;
+            hadamard = getHadamard(name);
+            var matrix = hadamard.matrix;
+            var walsh = hadamard.walsh;
+
+            for(int i = 0; i < input.Length; i++){
+                int sum = 0;
+                for(int j = 0; j < input.Length; j++){
+                    sum += input[j] * matrix[j,i];
+                }
+                
+                // output[walsh[i]] = (int)(sum/N);
                 output[walsh[i]] = (int)(sum/N);
             }
             
