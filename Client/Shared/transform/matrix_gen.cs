@@ -33,21 +33,21 @@ namespace Client.Shared.HadamardGen {
         
         //Function to generate hadamard matrices up to HM
         //M is the number of matricies to generate
-        public static void genHadamards(int M, string json_path){
+        public static void GenHadamards(int M, string json_path){
             int [,] previous_matrix = new int[2,2] {{1, 1},{1,-1}};
 
             for(int i = 1; i <= M; i++){
                 var name = "H" + i;
-                var temp = kroneckerProduct(previous_matrix, i);
+                var temp = KroneckerProduct(previous_matrix, i);
 
-                var walsh = generateWalsh(temp);
-                var valid_walsh = checkRepeats(walsh);
+                var walsh = GenerateWalsh(temp);
+                var valid_walsh = CheckRepeats(walsh);
                 if (valid_walsh){
                     Console.WriteLine("Invalid walsh"); 
                     return;
                 }
 
-                createJson(temp, walsh, name, json_path);
+                CreateJson(temp, walsh, name, json_path);
 
                 previous_matrix = temp;
             }
@@ -55,7 +55,7 @@ namespace Client.Shared.HadamardGen {
 
         }
 
-        public static int[,] kroneckerProduct(int[,] previous_matrix, int index){
+        public static int[,] KroneckerProduct(int[,] previous_matrix, int index){
             int size = (int)Math.Pow(2, index);
             int[,] temp = new int[size, size];
 
@@ -91,7 +91,7 @@ namespace Client.Shared.HadamardGen {
         }
 
         //Function to add a hadamard matrix and its walsh array to a json file
-        public static void createJson(int[,] hadamard, int[] walsh, string name, string json_path){
+        public static void CreateJson(int[,] hadamard, int[] walsh, string name, string json_path){
             Matrix matrix = new();
 
             matrix.walsh = walsh;
@@ -107,7 +107,7 @@ namespace Client.Shared.HadamardGen {
         }
         
         //Function that generates an array that correlates the number of flips in each hadamard row
-        public static int[] generateWalsh(int[,] matrix){
+        public static int[] GenerateWalsh(int[,] matrix){
             int[] walsh = new int[matrix.GetLength(0)];
             for(int i = 0; i < matrix.GetLength(0); i++){
                 int flips = 0;
@@ -132,7 +132,7 @@ namespace Client.Shared.HadamardGen {
         }
 
         //Function to check for repeated numbers in an array
-        public static bool checkRepeats(int[] array){
+        public static bool CheckRepeats(int[] array){
             for(int i = 0; i < array.Length; i++){
                 for(int j = i + 1; j < array.Length; j++){
                     if(array[i] == array[j]){
@@ -148,12 +148,12 @@ namespace Client.Shared.HadamardGen {
 
     public class Transform{
 
-        public static int[] hadamardTransform(int[] input, int size){
+        public static int[] HadamardTransform(int[] input, int size){
             Matrix hadamard = new();
             int[] output = new int[input.Length];
 
             var name = "H" + size;
-            hadamard = getHadamard(name);
+            hadamard = GetHadamard(name);
             var matrix = hadamard.matrix;
             var walsh = hadamard.walsh;
         
@@ -170,13 +170,13 @@ namespace Client.Shared.HadamardGen {
             return output;
         }
 
-        public static int[] inverseHadamardTransform(int[] input, int size){
+        public static int[] InverseHadamardTransform(int[] input, int size){
             Matrix hadamard = new();
             int[] output = new int[input.Length];
             var N = Math.Pow(2, size);
 
             var name = "H" + size;
-            hadamard = getHadamard(name);
+            hadamard = GetHadamard(name);
             var matrix = hadamard.matrix;
             var walsh = hadamard.walsh;
 
@@ -194,12 +194,12 @@ namespace Client.Shared.HadamardGen {
         }
 
 
-        public static int[] walshTransform(int[] input, int size){
+        public static int[] WalshTransform(int[] input, int size){
             Matrix hadamard = new();
             int[] output = new int[input.Length];
 
             var name = "H" + size;
-            hadamard = getHadamard(name);
+            hadamard = GetHadamard(name);
             var matrix = hadamard.matrix;
             var walsh = hadamard.walsh;
         
@@ -215,13 +215,13 @@ namespace Client.Shared.HadamardGen {
             return output;
         }
 
-        public static int[] inverseWalshTransform(int[] input, int size){
+        public static int[] InverseWalshTransform(int[] input, int size){
             Matrix hadamard = new();
             int[] output = new int[input.Length];
             var N = Math.Pow(2, size);
 
             var name = "H" + size;
-            hadamard = getHadamard(name);
+            hadamard = GetHadamard(name);
             var matrix = hadamard.matrix;
             var walsh = hadamard.walsh;
 
@@ -238,7 +238,7 @@ namespace Client.Shared.HadamardGen {
             return output;
         }
 
-        public static Matrix getHadamard(string name){
+        public static Matrix GetHadamard(string name){
             Matrix matrix = new();
             var fileName = $"./hadamard_{name}.json";
             var json = File.ReadAllText(fileName);

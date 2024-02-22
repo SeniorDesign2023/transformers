@@ -16,7 +16,7 @@ namespace Client.Shared.API
             var settings = new SettingsService();
             string path = settings.GetPath();
             int m = settings.GetM();
-            Generator.genHadamards(m, path);
+            Generator.GenHadamards(m, path);
         }
 
         // This function will eventually return a list of integers so we can graph them
@@ -25,7 +25,7 @@ namespace Client.Shared.API
             int len = list.Length;
             int size = (int)Floor(Log(len, 2));
 
-            return Transform.hadamardTransform(list, size);
+            return Transform.HadamardTransform(list, size);
         }
 
         // Taking an int list as an arguement to hadamard transform
@@ -51,7 +51,7 @@ namespace Client.Shared.API
             Array.Resize(ref tmp, (int)Math.Pow(2, size));
 
             // actually doing transform
-            int[] ret = Transform.hadamardTransform(tmp, size);
+            int[] ret = Transform.HadamardTransform(tmp, size);
 
             // resizing based on percentage
             Array.Resize(ref ret, (int)(Math.Pow(2,size) * (1 - percentage)));
@@ -84,7 +84,7 @@ namespace Client.Shared.API
             Array.Resize(ref tmp, (int)Math.Pow(2, size));
 
             // actually doing transform
-            int[] ret = Transform.hadamardTransform(tmp, size);
+            int[] ret = Transform.HadamardTransform(tmp, size);
 
             // resizing based on percentage
             Array.Resize(ref ret, (int)(Math.Pow(2,size) * (1 - percentage)));
@@ -97,7 +97,7 @@ namespace Client.Shared.API
             int len = list.Length;
             int size = (int)Floor(Log(len, 2));
 
-            return Transform.inverseHadamardTransform(list, size);
+            return Transform.InverseHadamardTransform(list, size);
         }
 
         // Deserializing JSON files to get an int list
