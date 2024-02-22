@@ -1,0 +1,59 @@
+@using Client.Services
+@using Client.Shared.API
+@inject API APIServ
+@inject SettingsService SettingsServe
+@inject IFolderPicker FP
+
+@page "/settings"
+
+<h1>Settings</h1>
+
+<button @onclick="GoToHome">Home</button>
+
+<div>
+    <button @onclick="PickFolder">Pick Folder</button>
+    <p>Selected Folder: @path</p>
+</div>
+
+<div>
+    <label for="numMatrices">Number of Hadimards (1-15):</label>
+    <input id="numMatrices" type="number" @bind="matrices" min="1" max="15" />
+    <button @onclick="ChangeSettings">Submit</button>
+</div>
+
+
+@code {
+    private string path = string.Empty;
+    private int matrices = 1;
+    [Inject] private NavigationManager NavMan { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    private void GoToHome()
+    {
+        NavMan.NavigateTo("/");
+    }
+
+    private async Task PickFolder()
+    {
+        try
+        {
+            @* var folderPicker = DependencyService.Get<IFolderPicker>(); *@
+            path = await FP.PickFolder();
+        }
+        catch (Exception ex)
+        {
+            // Handle exception if needed
+            path = "Error picking folder: " + ex.Message;
+        }
+    }
+    private void ChangeSettings()
+    {
+        SettingsServe.SetSettings(path: path , m: matrices);
+        APIServ.initialize();
+    }
+
+}

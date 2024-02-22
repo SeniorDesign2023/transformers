@@ -5,24 +5,24 @@ namespace Client.Services
 {
     public class SettingsService
     {
-        private string path = ".\\settings.json";
+        private readonly string settingsFile = ".\\settings.json";
         public SettingsService()
         {
-            if(!File.Exists(path)) 
+            if(!File.Exists(settingsFile)) 
             {
                 var settings = new Settings
                 {
-                    Path = "",
-                    M = 0
+                    Path = ".\\",
+                    M = 5
                 };
                 string json = JsonSerializer.Serialize(settings);
-                File.WriteAllText(path, json); 
+                File.WriteAllText(settingsFile, json); 
             }
         }
 
         public Settings GetSettings()
         {
-            string json = File.ReadAllText(path);
+            string json = File.ReadAllText(settingsFile);
             return JsonSerializer.Deserialize<Settings>(json);
         }
 
@@ -38,9 +38,25 @@ namespace Client.Services
             return settings.M;
         }
 
-        public void SetSettings(string path, int m)
+        public void SetSettings(string path = null, int m = -1)
         {
-            
+            if (string.IsNullOrEmpty(path))
+            {
+                path = GetPath();
+            }
+
+            if (m < 1)
+            {
+                m = GetM();
+            }
+
+            var settings = new Settings
+            {
+                Path = path,
+                M = m
+            };
+            string json = JsonSerializer.Serialize(settings);
+            File.WriteAllText(settingsFile, json); 
         } 
 
     }

@@ -17,12 +17,9 @@ namespace Client.Shared.API
         // This function generates the inital Hadamard matrices
         public void initialize()
         {
-            //string path = "C:\\Users\\fmart\\Senior_Design\\transformers\\Client";
             var settings = new SettingsService();
             string path = settings.GetPath();
-            Console.WriteLine(path);
             int m = settings.GetM();
-            Console.WriteLine(m);
             Generator.gen_hadimards(m, path);
         }
 
