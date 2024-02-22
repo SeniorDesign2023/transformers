@@ -33,7 +33,7 @@ namespace Client.Shared.HadamardGen {
         
         //Function to generate hadamard matrices up to HM
         //M is the number of matricies to generate
-        public static void genHadmards(int M, string json_path){
+        public static void genHadamards(int M, string json_path){
             int [,] previous_matrix = new int[2,2] {{1, 1},{1,-1}};
 
             for(int i = 1; i <= M; i++){
