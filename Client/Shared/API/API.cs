@@ -10,7 +10,7 @@ namespace Client.Shared.API
     public class API
     {
 
-        // This function generates the inital Hadamard matrices
+        // This function generates the initial Hadamard matrices
         public void Initialize()
         {
             var settings = new SettingsService();
