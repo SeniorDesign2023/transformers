@@ -3,6 +3,8 @@
 @inject API APIServ
 @inject SettingsService SettingsServe
 
+@* comment *@
+
 @page "/"
 
 <h1>Transformers</h1>
@@ -19,7 +21,7 @@
 
     protected override void OnInitialized()
     {
-        APIServ.initialize();
+        APIServ.Initialize();
         base.OnInitialized();
     }
         private void GoToInput()
