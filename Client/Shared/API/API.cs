@@ -11,7 +11,7 @@ namespace Client.Shared.API
     {
 
         // This function generates the inital Hadamard matrices
-        public void initialize()
+        public void Initialize()
         {
             var settings = new SettingsService();
             string path = settings.GetPath();
@@ -20,7 +20,7 @@ namespace Client.Shared.API
         }
 
         // This function will eventually return a list of integers so we can graph them
-        public int[] transformPow2(int[] list)
+        public int[] TransformPow2(int[] list)
         {
             int len = list.Length;
             int size = (int)Floor(Log(len, 2));
@@ -28,7 +28,8 @@ namespace Client.Shared.API
             return Transform.hadamardTransform(list, size);
         }
 
-        public int[] forwardHadamardTransform(int[] list, bool truncate, int percent)
+        // Taking an int list as an arguement to hadamard transform
+        public int[] ForwardHadamardTransform(int[] list, bool truncate, int percent)
         {
             int len = list.Length;
             int size;
@@ -58,7 +59,40 @@ namespace Client.Shared.API
             return ret;
         }
 
-        public int[] inverseHadamardTransform(int[] list)
+        // Taking a JSON path as an arguement to hadamard transform
+
+        public int[] ForwardHadamardTransform(string path, bool truncate, int percent)
+        {
+            int[] list = DeserializeFromPath(path);
+            int len = list.Length;
+            int size;
+            float percentage = percent / (float)100;
+            int[] tmp = new int[len];
+            //creating a deep copy
+            Array.Copy(list, tmp, len);
+
+            // checking if we are truncating or not
+            if (truncate)
+            {
+                size = (int)Floor(Log(len, 2));
+            }
+            else
+            {
+                size = (int)Ceiling(Log(len, 2));
+            }
+            // resizing the array to the calculated truncation
+            Array.Resize(ref tmp, (int)Math.Pow(2, size));
+
+            // actually doing transform
+            int[] ret = Transform.hadamardTransform(tmp, size);
+
+            // resizing based on percentage
+            Array.Resize(ref ret, (int)(Math.Pow(2,size) * (1 - percentage)));
+
+            return ret;
+        }
+
+        public int[] InverseHadamardTransform(int[] list)
         {
             int len = list.Length;
             int size = (int)Floor(Log(len, 2));
