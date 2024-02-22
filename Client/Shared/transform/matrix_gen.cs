@@ -28,26 +28,26 @@ namespace Client.Shared.HadamardGen {
         }
     }
     
-    //Class to generate and display hadimard matrices
+    //Class to generate and display hadamard matrices
     class Generator { 
         
-        //Function to generate hadimard matrices up to HM
+        //Function to generate hadamard matrices up to HM
         //M is the number of matricies to generate
-        public static void gen_hadimards(int M, string json_path){
+        public static void genHadmards(int M, string json_path){
             int [,] previous_matrix = new int[2,2] {{1, 1},{1,-1}};
 
             for(int i = 1; i <= M; i++){
                 var name = "H" + i;
-                var temp = kronecker_product(previous_matrix, i);
+                var temp = kroneckerProduct(previous_matrix, i);
 
-                var walsh = generate_walsh(temp);
-                var valid_walsh = check_repeats(walsh);
+                var walsh = generateWalsh(temp);
+                var valid_walsh = checkRepeats(walsh);
                 if (valid_walsh){
                     Console.WriteLine("Invalid walsh"); 
                     return;
                 }
 
-                create_json(temp, walsh, name, json_path);
+                createJson(temp, walsh, name, json_path);
 
                 previous_matrix = temp;
             }
@@ -55,7 +55,7 @@ namespace Client.Shared.HadamardGen {
 
         }
 
-        public static int[,] kronecker_product(int[,] previous_matrix, int index){
+        public static int[,] kroneckerProduct(int[,] previous_matrix, int index){
             int size = (int)Math.Pow(2, index);
             int[,] temp = new int[size, size];
 
@@ -90,15 +90,15 @@ namespace Client.Shared.HadamardGen {
             return temp;
         }
 
-        //Function to add a hadimard matrix and its walsh array to a json file
-        public static void create_json(int[,] hadimard, int[] walsh, string name, string json_path){
+        //Function to add a hadamard matrix and its walsh array to a json file
+        public static void createJson(int[,] hadamard, int[] walsh, string name, string json_path){
             Matrix matrix = new();
 
             matrix.walsh = walsh;
             matrix.name = name;
-            matrix.matrix = hadimard;
+            matrix.matrix = hadamard;
 
-            var fileName = $"{json_path}/hadimard_{name}.json";
+            var fileName = $"{json_path}/hadamard_{name}.json";
             Console.WriteLine(fileName);
             var jsonout = JsonConvert.SerializeObject(matrix);
             File.WriteAllText(fileName, jsonout);
@@ -106,8 +106,8 @@ namespace Client.Shared.HadamardGen {
             
         }
         
-        //Function that generates an array that correlates the number of flips in each hadimard row
-        public static int[] generate_walsh(int[,] matrix){
+        //Function that generates an array that correlates the number of flips in each hadamard row
+        public static int[] generateWalsh(int[,] matrix){
             int[] walsh = new int[matrix.GetLength(0)];
             for(int i = 0; i < matrix.GetLength(0); i++){
                 int flips = 0;
@@ -132,7 +132,7 @@ namespace Client.Shared.HadamardGen {
         }
 
         //Function to check for repeated numbers in an array
-        public static bool check_repeats(int[] array){
+        public static bool checkRepeats(int[] array){
             for(int i = 0; i < array.Length; i++){
                 for(int j = i + 1; j < array.Length; j++){
                     if(array[i] == array[j]){
@@ -148,55 +148,99 @@ namespace Client.Shared.HadamardGen {
 
     public class Transform{
 
-        public static int[] hadimard_transform(int[] input, int size){
-            Matrix hadimard = new();
+        public static int[] hadamardTransform(int[] input, int size){
+            Matrix hadamard = new();
             int[] output = new int[input.Length];
 
             var name = "H" + size;
-            hadimard = get_hadimard(name);
-            var matrix = hadimard.matrix;
-            var walsh = hadimard.walsh;
+            hadamard = getHadamard(name);
+            var matrix = hadamard.matrix;
+            var walsh = hadamard.walsh;
         
             for(int i = 0; i < input.Length; i++){
                 int sum = 0;
                 for(int j = 0; j < input.Length; j++){
 
                     sum += input[j] * matrix[i,j];
-                    // Console.WriteLine($"Sum: {sum}");
                 }
-                // Console.WriteLine($"Walsh[i]: {walsh[i]}");
-                output[walsh[i]] = sum;
+                // output[walsh[i]] = sum;
+                output[i] = sum;
             }
             
             return output;
         }
 
-        public static int[] inverse_hadimard_transform(int[] input, int size){
-            Matrix hadimard = new();
+        public static int[] inverseHadamardTransform(int[] input, int size){
+            Matrix hadamard = new();
             int[] output = new int[input.Length];
             var N = Math.Pow(2, size);
 
             var name = "H" + size;
-            hadimard = get_hadimard(name);
-            var matrix = hadimard.matrix;
-            var walsh = hadimard.walsh;
+            hadamard = getHadamard(name);
+            var matrix = hadamard.matrix;
+            var walsh = hadamard.walsh;
 
             for(int i = 0; i < input.Length; i++){
                 int sum = 0;
                 for(int j = 0; j < input.Length; j++){
                     sum += input[j] * matrix[j,i];
                 }
-                // Console.WriteLine($"Walsh[i]: {walsh[i]}");
                 
+                // output[walsh[i]] = (int)(sum/N);
+                output[i] = (int)(sum/N);
+            }
+            
+            return output;
+        }
+
+
+        public static int[] walshTransform(int[] input, int size){
+            Matrix hadamard = new();
+            int[] output = new int[input.Length];
+
+            var name = "H" + size;
+            hadamard = getHadamard(name);
+            var matrix = hadamard.matrix;
+            var walsh = hadamard.walsh;
+        
+            for(int i = 0; i < input.Length; i++){
+                int sum = 0;
+                for(int j = 0; j < input.Length; j++){
+
+                    sum += input[j] * matrix[i,j];
+                }
+                output[walsh[i]] = sum;
+            }
+            
+            return output;
+        }
+
+        public static int[] inverseWalshTransform(int[] input, int size){
+            Matrix hadamard = new();
+            int[] output = new int[input.Length];
+            var N = Math.Pow(2, size);
+
+            var name = "H" + size;
+            hadamard = getHadamard(name);
+            var matrix = hadamard.matrix;
+            var walsh = hadamard.walsh;
+
+            for(int i = 0; i < input.Length; i++){
+                int sum = 0;
+                for(int j = 0; j < input.Length; j++){
+                    sum += input[j] * matrix[j,i];
+                }
+                
+                // output[walsh[i]] = (int)(sum/N);
                 output[walsh[i]] = (int)(sum/N);
             }
             
             return output;
         }
 
-        public static Matrix get_hadimard(string name){
+        public static Matrix getHadamard(string name){
             Matrix matrix = new();
-            var fileName = $"./hadimard_{name}.json";
+            var fileName = $"./hadamard_{name}.json";
             var json = File.ReadAllText(fileName);
             matrix = JsonConvert.DeserializeObject<Matrix>(json);
             return matrix;
@@ -207,11 +251,11 @@ namespace Client.Shared.HadamardGen {
          // Main Method
         // static public void Main() { 
 
-        //     Generator.gen_hadimards(5, "./");
+        //     Generator.gen_hadamards(5, "./");
 
         //     var size = 4;
-        //     var transform = Transform.hadimard_transform(new int[] {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}, size);
-        //     var inverse = Transform.inverse_hadimard_transform(transform, size);
+        //     var transform = Transform.hadamard_transform(new int[] {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}, size);
+        //     var inverse = Transform.inverse_hadamard_transform(transform, size);
 
         //     Console.WriteLine("Transform:\n");
 
