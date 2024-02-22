@@ -67,14 +67,14 @@ namespace Client.Shared.API
         }
 
         // Deserializing JSON files to get an int list
-        public int[] deserialize(string path)
+        public int[] DeserializeFromPath(string path)
         {
             // Reading the text for the path
             string json = File.ReadAllText(path);
 
             var data = new Data {};
 
-            JsonSerializer.Deserialize<Data>(json);
+            data = JsonSerializer.Deserialize<Data>(json);
 
             return data.Elements;
         }
