@@ -20,7 +20,7 @@ namespace Client.Shared.API
             var settings = new SettingsService();
             string path = settings.GetPath();
             int m = settings.GetM();
-            Generator.gen_hadimards(m, path);
+            Generator.genHadamards(m, path);
         }
 
         // This function will eventually return a list of integers so we can graph them
@@ -29,7 +29,7 @@ namespace Client.Shared.API
             int len = list.Length;
             int size = (int)Floor(Log(len, 2));
 
-            return Transform.hadimard_transform(list, size);
+            return Transform.hadamardTransform(list, size);
         }
 
         // Actually just a Walsh transform, assuming will be renamed in engine.
@@ -55,7 +55,7 @@ namespace Client.Shared.API
             Array.Resize(ref tmp, (int)Math.Pow(2, size));
 
             // actually doing transform
-            int[] ret = Transform.hadimard_transform(tmp, size);
+            int[] ret = Transform.hadamardTransform(tmp, size);
 
             // resizing based on percentage
             Array.Resize(ref ret, (int)(Math.Pow(2,size) * (1 - percentage)));
@@ -69,7 +69,7 @@ namespace Client.Shared.API
             int len = list.Length;
             int size = (int)Floor(Log(len, 2));
 
-            return Transform.inverse_hadimard_transform(list, size);
+            return Transform.inverseHadamardTransform(list, size);
         }
 
     }
