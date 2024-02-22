@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+﻿using System.Text.Json;
+using Client.Models;
 using Client.Shared.HadamardGen;
 using static System.Math;
 using Client.Services;
@@ -68,6 +64,19 @@ namespace Client.Shared.API
             int size = (int)Floor(Log(len, 2));
 
             return Transform.inverseHadamardTransform(list, size);
+        }
+
+        // Deserializing JSON files to get an int list
+        public int[] deserialize(string path)
+        {
+            // Reading the text for the path
+            string json = File.ReadAllText(path);
+
+            var data = new Data {};
+
+            JsonSerializer.Deserialize<Data>(json);
+
+            return data.Elements;
         }
 
     }
