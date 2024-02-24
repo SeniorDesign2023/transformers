@@ -1,4 +1,4 @@
-﻿Status Update 4
+﻿**Status Update 4**
 
 -----
 - **Recap:**
@@ -7,7 +7,7 @@ We wanted to get the MVP done and we effectively did that this sprint. We starte
 
 - **Tasks completed**
   - Description of tasks completed (and by whom)
-    - General**:** We all gave comments on and thought about how to present this work now that it is beginning to come together.
+    - General: We all gave comments on and thought about how to present this work now that it is beginning to come together.
     - Derik: General coding guidance. Started working on our presentation and double checked the math. Worked out how to test the matrices. Continuing algorithm research for stretch goals.
     - Kain: Audio recordings and presentation feedback. Algorithm research.
     - Chet: Setup the API service to take data from the view and run the transform functions.
