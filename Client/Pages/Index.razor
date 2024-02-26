@@ -3,17 +3,9 @@
 @inject API APIServ
 @inject SettingsService SettingsServe
 
-@* comment *@
-
 @page "/"
 
 <h1>Transformers</h1>
-
-<button @onclick="GoToInput">Input Data</button>
-
-<button @onclick="GoToUpload">Upload Data</button>
-
-<button @onclick="GoToSettings">Settings</button>
 
 @code {
     [Inject] private NavigationManager NavMan {get; set;}
@@ -23,20 +15,6 @@
     {
         APIServ.Initialize();
         base.OnInitialized();
-    }
-        private void GoToInput()
-    {
-        NavMan.NavigateTo("/input");
-    }
-
-    private void GoToUpload()
-    {
-        NavMan.NavigateTo("/upload");
-    }
-
-    private void GoToSettings()
-    {
-        NavMan.NavigateTo("/settings");
     }
 }
 

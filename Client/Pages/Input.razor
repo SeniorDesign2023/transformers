@@ -5,8 +5,6 @@
 
 <h1>Input Data</h1>
 
-<button @onclick="GoToHome">Home</button>
-
 <div>
     <label for="inputData">Enter your data:</label>
     <input id="inputData" @bind="dataString" />
@@ -40,11 +38,6 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-    }
-
-    private void GoToHome()
-    {
-        NavMan.NavigateTo("/");
     }
 
     private void SendData()

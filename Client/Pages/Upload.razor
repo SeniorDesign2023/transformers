@@ -6,10 +6,6 @@
 <h1>Upload Data</h1>
 
 <div>
-    <button @onclick="GoToHome">Home</button>
-</div>
-
-<div>
     <InputFile OnChange="@UploadFile" multiple accept=".json" />
 </div>
 
@@ -54,11 +50,6 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-    }
-
-    private void GoToHome()
-    {
-        NavMan.NavigateTo("/");
     }
 
     private void SendData()
