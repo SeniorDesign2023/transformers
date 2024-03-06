@@ -3,33 +3,44 @@
 @using Client.Shared.API;
 @inject API APIServe
 
-<h1>Upload Data</h1>
-
-<div>
-    <InputFile OnChange="@UploadFile" multiple accept=".json" />
+<div class="headers">
+    <h1>Upload Data</h1>
 </div>
 
-<div>
-    <label for="truncData">Truncate Data:</label>
-    <input type="checkbox" @bind="truncate"/>
-</div>
+<div class="page-body">
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p>
 
-<div>
-    <label for="compPercent">Compression Percentage (0-100):</label>
-    <input id="compPercent" type="number" @bind="compression" min="0" max="100" />
-    <button @onclick="SendData">Submit</button>
-</div>
+    <div>
+        <InputFile OnChange="@UploadFile" multiple accept=".json" />
+    </div>
 
-@if (errors.Count > 0)
-{
-    <h2>Errors</h2>
-    <ul class="text-danger">
-        @foreach (var error in errors)
+    <div>
+        <label for="truncData">Truncate Data:</label>
+        <input type="checkbox" @bind="truncate"/>
+    </div>
+
+    <div>
+        <label for="compPercent">Compression Percentage (0-100):</label>
+        <input id="compPercent" type="number" @bind="compression" min="0" max="100" />
+        <button @onclick="SendData">Submit</button>
+    </div>
+
+    <div>
+        @if (errors.Count > 0)
         {
-            <li>@error</li>
+            <h2>Errors</h2>
+            <ul class="text-danger">
+                @foreach (var error in errors)
+                {
+                    <li>@error</li>
+                }
+            </ul>
         }
-    </ul>
-}
+    </div>
+</div>
+
 
 @if (outputData != null)
 {

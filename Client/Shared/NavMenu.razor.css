@@ -12,6 +12,7 @@
 }
 
 .oi {
+    color: white;
     width: 2rem;
     font-size: 1.1rem;
     vertical-align: text-top;
@@ -32,7 +33,7 @@
     }
 
     .nav-item ::deep a {
-        color: #d7d7d7;
+        color: white;
         border-radius: 4px;
         height: 3rem;
         display: flex;

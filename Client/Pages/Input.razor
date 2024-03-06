@@ -3,29 +3,42 @@
 
 @page "/input"
 
-<h1>Input Data</h1>
-
-<div>
-    <label for="inputData">Enter your data:</label>
-    <input id="inputData" @bind="dataString" />
+<div class="headers">
+    <h1>Input Data</h1>
 </div>
 
-<div>
-    <label for="truncData">Truncate Data:</label>
-    <input type="checkbox" @bind="truncate"/>
+<div class="page-body">
+    <div>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+    </div>
+
+    <div>
+        <label for="inputData">Enter your data:</label>
+        <input id="inputData" @bind="dataString" />
+    </div>
+    
+    <div>
+        <label for="truncData">Truncate Data:</label>
+        <input type="checkbox" @bind="truncate"/>
+    </div>
+
+    <div>
+        <label for="compPercent">Compression Percentage (0-100):</label>
+        <input id="compPercent" type="number" @bind="compression" min="0" max="100" />
+        <button @onclick="SendData">Submit</button>
+    </div>
+
+    <div>
+        @if (outputData != null && outputData.Any())
+        {
+            <p> Graph the data </p>
+            <ScatterChart YVals="outputData" @key="outputData" />
+        }
+    </div>
 </div>
 
-<div>
-    <label for="compPercent">Compression Percentage (0-100):</label>
-    <input id="compPercent" type="number" @bind="compression" min="0" max="100" />
-    <button @onclick="SendData">Submit</button>
-</div>
-
-@if (outputData != null && outputData.Any())
-{
-    <p> Graph the data </p>
-    <ScatterChart YVals="outputData" @key="outputData" />
-}
 
 @code {
     private string dataString;
