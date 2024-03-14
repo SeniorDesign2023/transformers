@@ -2,7 +2,13 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: white;
+    background-color: whitesmoke;
+}
+
+.card {
+    padding: 10px;
+    border: whitesmoke;
+    background-color: whitesmoke;
 }
 
 .card-header {
@@ -11,6 +17,40 @@ html, body {
 
 .card-body {
     background-color: #d3d3d3;
+}
+
+.card-group {
+    background-color: #d3d3d3;
+}
+
+.card-footer {
+    background-color: #d3d3d3;
+    border: #d3d3d3;
+}
+
+.btn-primary {
+    color: black !important;
+    background-color: #A2A569 !important;
+    border-color: #A2A569 !important;
+}
+
+.btn-primary:hover {
+    background-color: #6D712E !important;
+}
+
+.btn-primary:focus {
+    box-shadow: none !important;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: black;
+    background-color: #d3d3d3;
+    border-color: #d3d3d3;
+}
+
+
+.nav-tabs:hover {
+    border-color: #d3d3d3;
 }
 
 h1:focus {

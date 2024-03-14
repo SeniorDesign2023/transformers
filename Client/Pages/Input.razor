@@ -3,40 +3,60 @@
 
 @page "/input"
 
-<div class="headers">
-    <h1>Input Data</h1>
+<div class="card">
+    <div class="card-header text-center fs-2">
+        Transform Data
+    </div>
+
+    <div class="card-body">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </div>
 </div>
 
-<div class="page-body">
-    <div>
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-    </div>
-
-    <div>
-        <label for="inputData">Enter your data:</label>
-        <input id="inputData" @bind="dataString" />
+<div class="card">
+  <div class="card-header">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="true" href="/input">Input Data</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" style="color: black" href="/upload">Upload Data</a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-group">
+    <div class="card" style="background-color: #d3d3d3">
+      <div class="card-body">
+          <label for="inputData">Enter your data:</label>
+          <input id="inputData" @bind="dataString" />
+      </div>
     </div>
     
-    <div>
+    <div class="card" style="background-color: #d3d3d3">
+      <div class="card-body">
+        <label for="compPercent">Compression Percentage:</label>
+        <input id="compPercent" type="number" @bind="compression" min="0" max="100" />
+      </div>
+    </div>
+
+    <div class="card" style="background-color: #d3d3d3">
+      <div class="card-body">
         <label for="truncData">Truncate Data:</label>
         <input type="checkbox" @bind="truncate"/>
+      </div>
     </div>
+  </div>
 
-    <div>
-        <label for="compPercent">Compression Percentage (0-100):</label>
-        <input id="compPercent" type="number" @bind="compression" min="0" max="100" />
-        <button @onclick="SendData">Submit</button>
-    </div>
+  <div class="card-footer text-end">
+    <button @onclick="SendData" class="btn btn-primary">Submit</button>
+  </div>
+</div>
 
-    <div>
-        @if (outputData != null && outputData.Any())
-        {
-            <p> Graph the data </p>
-            <ScatterChart YVals="outputData" @key="outputData" />
-        }
-    </div>
+<div class="card" style="align-items: center">
+  @if (outputData != null && outputData.Any())
+  {
+    <ScatterChart YVals="outputData" @key="outputData" />
+  }
 </div>
 
 
