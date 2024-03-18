@@ -14,7 +14,7 @@
     <div class="card-group">
     <div class="card" style="background-color: #d3d3d3">
       <div class="card-body">
-        <button class="btn btn-primary" @onclick="PickFolder">Choose Folder</button>
+        <button @onclick="PickFolder">Choose Folder</button>
         @path
       </div>
     </div>
@@ -46,7 +46,7 @@
 }
 
 @code {
-    private string path = "No path chosen";
+    private string path = "No folder chosen";
     private int matrices = 1;
     private bool changeSettings = false;
     [Inject] private NavigationManager NavMan { get; set; }
