@@ -6,25 +6,49 @@
 
 @page "/settings"
 
-<h1>Settings</h1>
+<div class="card">
+    <div class="card-header text-center fs-2">
+        Settings
+    </div>
 
-<button @onclick="GoToHome">Home</button>
+    <div class="card-group">
+    <div class="card" style="background-color: #d3d3d3">
+      <div class="card-body">
+        <button @onclick="PickFolder">Choose Folder</button>
+        @path
+      </div>
+    </div>
+    
+    <div class="card" style="background-color: #d3d3d3">
+      <div class="card-body">
+        <label for="numMatrices">Number of Hadimards (1-15):</label>
+        <input id="numMatrices" type="number" @bind="matrices" min="1" max="15" />
+      </div>
+    </div>
+  </div>
 
-<div>
-    <button @onclick="PickFolder">Pick Folder</button>
-    <p>Selected Folder: @path</p>
+  <div class="card-footer text-end">
+    <button @onclick="ChangeSettings" class="btn btn-primary">Submit</button>
+  </div>
 </div>
 
-<div>
-    <label for="numMatrices">Number of Hadimards (1-15):</label>
-    <input id="numMatrices" type="number" @bind="matrices" min="1" max="15" />
-    <button @onclick="ChangeSettings">Submit</button>
-</div>
-
+@if(changeSettings) 
+{
+    <div class="card">
+        <div class="card-header fs-2" style="background-color: #d3d3d3">
+            Settings Updated
+        </div>
+        <div class="card-body">
+            <div>New Path: @path</div>
+            <div>New Number of Matrices: @matrices</div>
+        </div>
+    </div>
+}
 
 @code {
-    private string path = string.Empty;
+    private string path = "No folder chosen";
     private int matrices = 1;
+    private bool changeSettings = false;
     [Inject] private NavigationManager NavMan { get; set; }
 
     protected override void OnInitialized()
@@ -32,16 +56,10 @@
         base.OnInitialized();
     }
 
-    private void GoToHome()
-    {
-        NavMan.NavigateTo("/");
-    }
-
     private async Task PickFolder()
     {
         try
         {
-            @* var folderPicker = DependencyService.Get<IFolderPicker>(); *@
             path = await FP.PickFolder();
         }
         catch (Exception ex)
@@ -54,6 +72,8 @@
     {
         SettingsServe.SetSettings(path: path , m: matrices);
         APIServ.Initialize();
+        changeSettings = true;
+        StateHasChanged();
     }
 
 }

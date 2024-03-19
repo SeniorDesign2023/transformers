@@ -3,43 +3,62 @@
 @using Client.Shared.API;
 @inject API APIServe
 
-<h1>Upload Data</h1>
+<div class="card">
+    <div class="card-header text-center fs-2">
+        Transform Data
+    </div>
 
-<div>
-    <button @onclick="GoToHome">Home</button>
+    <div class="card-body">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </div>
 </div>
 
-<div>
-    <InputFile OnChange="@UploadFile" multiple accept=".json" />
-</div>
-
-<div>
-    <label for="truncData">Truncate Data:</label>
-    <input type="checkbox" @bind="truncate"/>
-</div>
-
-<div>
-    <label for="compPercent">Compression Percentage (0-100):</label>
-    <input id="compPercent" type="number" @bind="compression" min="0" max="100" />
-    <button @onclick="SendData">Submit</button>
-</div>
-
-@if (errors.Count > 0)
-{
-    <h2>Errors</h2>
-    <ul class="text-danger">
-        @foreach (var error in errors)
-        {
-            <li>@error</li>
-        }
+<div class="card">
+  <div class="card-header">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <a class="nav-link" style="color: black" href="/input">Input Data</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="true" href="/upload">Upload Data</a>
+      </li>
     </ul>
-}
+  </div>
+  <div class="card-group">
+    <div class="card" style="background-color: #d3d3d3">
+      <div class="card-body">
+          <InputFile OnChange="@UploadFile" multiple accept=".json" />
+      </div>
+    </div>
+    
+    <div class="card" style="background-color: #d3d3d3">
+      <div class="card-body">
+        <label for="compPercent">Compression Percentage:</label>
+        <input id="compPercent" type="number" @bind="compression" min="0" max="100" />
+      </div>
+    </div>
 
-@if (outputData != null)
-{
-    <p> Graph the data </p>
-    <ScatterChart YVals="outputData" @key="outputData" />
-}
+    <div class="card" style="background-color: #d3d3d3">
+      <div class="card-body">
+        <label for="truncData">Truncate Data:</label>
+        <input type="checkbox" @bind="truncate"/>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer text-end">
+    <button @onclick="SendData" class="btn btn-primary">Submit</button>
+  </div>
+</div>
+
+<div class="card" style="align-items: center">
+    @if (outputData != null)
+    {
+        <ScatterChart YVals="outputData" @key="outputData" />
+    }
+</div>
+
+
 
 @code {
     private long maxFileSize = 1024 * 1024 * 3; // 3 MB
@@ -54,11 +73,6 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-    }
-
-    private void GoToHome()
-    {
-        NavMan.NavigateTo("/");
     }
 
     private void SendData()

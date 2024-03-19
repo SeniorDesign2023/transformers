@@ -3,17 +3,17 @@
 @inject API APIServ
 @inject SettingsService SettingsServe
 
-@* comment *@
-
 @page "/"
 
-<h1>Transformers</h1>
+<div class="card">
+    <div class="card-header text-center fs-2">
+        Walsh-Hadamard Transformation
+    </div>
 
-<button @onclick="GoToInput">Input Data</button>
-
-<button @onclick="GoToUpload">Upload Data</button>
-
-<button @onclick="GoToSettings">Settings</button>
+    <div class="card-body">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </div>
+</div>
 
 @code {
     [Inject] private NavigationManager NavMan {get; set;}
@@ -23,20 +23,6 @@
     {
         APIServ.Initialize();
         base.OnInitialized();
-    }
-        private void GoToInput()
-    {
-        NavMan.NavigateTo("/input");
-    }
-
-    private void GoToUpload()
-    {
-        NavMan.NavigateTo("/upload");
-    }
-
-    private void GoToSettings()
-    {
-        NavMan.NavigateTo("/settings");
     }
 }
 
