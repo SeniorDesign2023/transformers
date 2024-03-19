@@ -102,7 +102,7 @@
         };
         signals.Add(temp);
         @* combinedData = API.whatever(signals); *@
-        combinedData = GenerateRandomArray();
+        combinedData = GenerateRandomArray(signals);
         StateHasChanged();
     }
 
@@ -114,13 +114,17 @@
             signals.Remove(signalToRemove);
         }
         @* combinedData = API.whatever(signals); *@
-        combinedData = GenerateRandomArray();
+        combinedData = GenerateRandomArray(signals);
         StateHasChanged();
     }
 
-    private int[] GenerateRandomArray()
+    private int[] GenerateRandomArray(List<Data> sigs)
     {
-        int length = 1; // Default length of the array
+        if(sigs.Count < 1)
+        {
+            return null;
+        }
+        int length = 10; // Default length of the array
         int minValue = 1; // Default minimum value
         int maxValue = 20; // Default maximum value
 
