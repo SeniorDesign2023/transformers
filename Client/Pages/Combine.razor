@@ -33,10 +33,12 @@
         <input id="compPercent" type="number" @bind="size" min="0" max="15" />
       </div>
     </div>
-  </div>
 
-  <div class="card-footer text-end">
-    <button @onclick="AddSignal" class="btn btn-primary">Submit</button>
+    <div class="card" style="background-color: #d3d3d3">
+        <div class="card-body text-end">
+            <button @onclick="AddSignal" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
   </div>
 </div>
 
@@ -54,13 +56,22 @@
     @foreach(var data in signals)
     {
         <div class="card">
-            <div class="card-header text-end">
-                <label for="truncData"></label>
-                <input type="checkbox"/>
+            <div class="card-header">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="includeSignal" checked/>
+                </div>
             </div>
-            <div class="card-body text-center">
-                <input id="includeGraph" type="number" />
-                <ScatterChart YVals="data.Elements" @key="data.Id"/>
+            <div class="card-group">
+                <div class="card" style="background-color: #d3d3d3; max-width: 5%;">
+                    <div class="card-body d-flex align-items-center">
+                        <input id="includeGraph" type="number"/>
+                    </div>
+                </div>
+                <div class="card" style="background-color: #d3d3d3">
+                    <div class="card-body text-center">
+                        <ScatterChart YVals="data.Elements" @key="data.Id"/>
+                    </div>
+                </div>
             </div>
         </div>
     }
