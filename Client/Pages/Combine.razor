@@ -22,35 +22,21 @@
         <a class="nav-link" style="color: black" href="/upload">Upload Data</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link active" aria-current="true" href="combine">Combine Data</a> 
+        <a class="nav-link active" aria-current="true" href="combine">Compose</a> 
       </li>
     </ul>
   </div>
   <div class="card-group">
     <div class="card" style="background-color: #d3d3d3">
       <div class="card-body">
-          <label for="inputData">Enter your data:</label>
-          <input id="inputData" @bind="dataString" />
-      </div>
-    </div>
-    
-    <div class="card" style="background-color: #d3d3d3">
-      <div class="card-body">
-        <label for="compPercent">Compression Percentage:</label>
-        <input id="compPercent" type="number" @bind="compression" min="0" max="100" />
-      </div>
-    </div>
-
-    <div class="card" style="background-color: #d3d3d3">
-      <div class="card-body">
-        <label for="truncData">Truncate Data:</label>
-        <input type="checkbox" @bind="truncate"/>
+        <label for="compPercent">Size:</label>
+        <input id="compPercent" type="number" @bind="size" min="0" max="15" />
       </div>
     </div>
   </div>
 
   <div class="card-footer text-end">
-    <button @onclick="AddSignal" class="btn btn-primary">Add</button>
+    <button @onclick="AddSignal" class="btn btn-primary">Submit</button>
   </div>
 </div>
 
@@ -58,7 +44,7 @@
 {
     <div class="card">
         <div class="card-header text-center fs-4">
-            Combined Data
+            Composite Signal
         </div>
         <div class="card-body text-center">
             <ScatterChart YVals="combinedData" @key="combinedData"/>
@@ -69,21 +55,23 @@
     {
         <div class="card">
             <div class="card-header text-end">
-                <button @onclick="() => RemoveSignal(data.Id)" class="oi oi-circle-x" aria-hidden="true" style="color: #8B0000"></button>
+                <label for="truncData"></label>
+                <input type="checkbox"/>
             </div>
             <div class="card-body text-center">
+                <input id="includeGraph" type="number" />
                 <ScatterChart YVals="data.Elements" @key="data.Id"/>
             </div>
         </div>
     }
 }
 
+
 @code {
     private int[] combinedData;
     private string dataString;
     private int[] inputData;
-    private bool truncate = false;
-    private int compression = 0;
+    private int size = 0;
     private List<Data> signals = new List<Data>();
 
     protected override void OnInitialized()
@@ -93,17 +81,15 @@
 
     private void AddSignal() 
     {
-        inputData = dataString.Split(',').Select(s => int.TryParse(s, out int result) ? result : 0).ToArray();
-        Data temp = new Data
+        combinedData = GenerateRandomArray();
+        for(int i = 0; i < 3; i++)
         {
-            Elements = inputData,
-            Truncate = truncate,
-            Compression = compression
-        };
-        signals.Add(temp);
-        @* combinedData = API.whatever(signals); *@
-        combinedData = GenerateRandomArray(signals);
-        StateHasChanged();
+            Data temp = new Data
+            {
+                Elements = GenerateRandomArray()
+            };
+            signals.Add(temp);
+        }
     }
 
     private void RemoveSignal(Guid id)
@@ -114,16 +100,12 @@
             signals.Remove(signalToRemove);
         }
         @* combinedData = API.whatever(signals); *@
-        combinedData = GenerateRandomArray(signals);
+        combinedData = GenerateRandomArray();
         StateHasChanged();
     }
 
-    private int[] GenerateRandomArray(List<Data> sigs)
+    private int[] GenerateRandomArray()
     {
-        if(sigs.Count < 1)
-        {
-            return null;
-        }
         int length = 10; // Default length of the array
         int minValue = 1; // Default minimum value
         int maxValue = 20; // Default maximum value
