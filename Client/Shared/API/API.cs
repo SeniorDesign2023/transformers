@@ -113,5 +113,10 @@ namespace Client.Shared.API
             return data.Elements;
         }
 
+        // Stub for combine functionality.
+        public (int[,], int[]) Combine(int size)
+        {
+            return (null, null);
+        }
     }
 }
