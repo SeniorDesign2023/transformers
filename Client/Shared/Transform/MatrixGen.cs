@@ -1,4 +1,5 @@
-﻿// namespace declaration 
+﻿using Client.Services;   
+// namespace declaration 
 namespace Client.Shared.HadamardGen { 
     
     // Class declaration 
@@ -240,7 +241,9 @@ namespace Client.Shared.HadamardGen {
 
         public static Matrix GetHadamard(string name){
             Matrix matrix = new();
-            var fileName = $"./hadamard_{name}.json";
+            var settings = new SettingsService();
+            string temp = settings.GetPath();
+            var fileName = $"{temp}\\hadamard_{name}.json";
             var json = File.ReadAllText(fileName);
             matrix = JsonConvert.DeserializeObject<Matrix>(json);
             return matrix;
