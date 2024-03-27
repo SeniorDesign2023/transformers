@@ -5,11 +5,5 @@ namespace Client.Models
         public int[] Elements { get; set; }
         public bool Truncate { get; set; }
         public int Compression { get; set; }
-        public Guid Id { get; set; }
-
-        public Data()
-        {
-            Id = Guid.NewGuid();
-        }
     }
 }
