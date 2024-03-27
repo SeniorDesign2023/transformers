@@ -39,7 +39,11 @@ namespace Client.Shared.API
             Array.Copy(list, tmp, len);
 
             // checking if we are truncating or not
-            if (truncate)
+            if(len == 1)
+            {
+                size = 1;
+            }
+            else if (truncate)
             {
                 size = (int)Floor(Log(len, 2));
             }
