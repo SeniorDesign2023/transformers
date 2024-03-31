@@ -70,6 +70,10 @@
     }
     private void ChangeSettings()
     {
+        if(path == "No folder chosen") 
+        {
+            path = "C:\\temp\\DataFiles";
+        }
         SettingsServe.SetSettings(path: path , m: matrices);
         APIServ.Initialize();
         changeSettings = true;

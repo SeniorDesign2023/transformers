@@ -149,9 +149,9 @@ namespace Client.Shared.HadamardGen {
 
     public class Transform{
 
-        public static int[] HadamardTransform(int[] input, int size){
+        public static double[] HadamardTransform(double[] input, int size){
             Matrix hadamard = new();
-            int[] output = new int[input.Length];
+            double[] output = new double[input.Length];
 
             var name = "H" + size;
             hadamard = GetHadamard(name);
@@ -159,7 +159,7 @@ namespace Client.Shared.HadamardGen {
             var walsh = hadamard.walsh;
         
             for(int i = 0; i < input.Length; i++){
-                int sum = 0;
+                double sum = 0;
                 for(int j = 0; j < input.Length; j++){
 
                     sum += input[j] * matrix[i,j];
@@ -171,9 +171,9 @@ namespace Client.Shared.HadamardGen {
             return output;
         }
 
-        public static int[] InverseHadamardTransform(int[] input, int size){
+        public static double[] InverseHadamardTransform(double[] input, int size){
             Matrix hadamard = new();
-            int[] output = new int[input.Length];
+            double[] output = new double[input.Length];
             var N = Math.Pow(2, size);
 
             var name = "H" + size;
@@ -182,22 +182,22 @@ namespace Client.Shared.HadamardGen {
             var walsh = hadamard.walsh;
 
             for(int i = 0; i < input.Length; i++){
-                int sum = 0;
+                double sum = 0;
                 for(int j = 0; j < input.Length; j++){
                     sum += input[j] * matrix[j,i];
                 }
                 
                 // output[walsh[i]] = (int)(sum/N);
-                output[i] = (int)(sum/N);
+                output[i] = (double)(sum/N);
             }
             
             return output;
         }
 
 
-        public static int[] WalshTransform(int[] input, int size){
+        public static double[] WalshTransform(double[] input, int size){
             Matrix hadamard = new();
-            int[] output = new int[input.Length];
+            double[] output = new double[input.Length];
 
             var name = "H" + size;
             hadamard = GetHadamard(name);
@@ -205,7 +205,7 @@ namespace Client.Shared.HadamardGen {
             var walsh = hadamard.walsh;
         
             for(int i = 0; i < input.Length; i++){
-                int sum = 0;
+                double sum = 0;
                 for(int j = 0; j < input.Length; j++){
 
                     sum += input[j] * matrix[i,j];
@@ -216,9 +216,9 @@ namespace Client.Shared.HadamardGen {
             return output;
         }
 
-        public static int[] InverseWalshTransform(int[] input, int size){
+        public static double[] InverseWalshTransform(double[] input, int size){
             Matrix hadamard = new();
-            int[] output = new int[input.Length];
+            double[] output = new double[input.Length];
             var N = Math.Pow(2, size);
 
             var name = "H" + size;
@@ -227,13 +227,13 @@ namespace Client.Shared.HadamardGen {
             var walsh = hadamard.walsh;
 
             for(int i = 0; i < input.Length; i++){
-                int sum = 0;
+                double sum = 0;
                 for(int j = 0; j < input.Length; j++){
                     sum += input[j] * matrix[j,i];
                 }
                 
                 // output[walsh[i]] = (int)(sum/N);
-                output[walsh[i]] = (int)(sum/N);
+                output[walsh[i]] = (double)(sum/N);
             }
             
             return output;
