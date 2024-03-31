@@ -84,8 +84,8 @@
 
 
 @code {
-    private int[] composedData;
-    private int[][] signals;
+    private double[] composedData;
+    private double[][] signals;
     private int size = 0;
     private List<Signal> allSignals = new List<Signal>();
     private List<Signal> includedSignals = new List<Signal>();
@@ -142,14 +142,14 @@
 
     }
 
-    private int[] GenerateRandomArray()
+    private double[] GenerateRandomArray()
     {
         int length = 10; // Default length of the array
         int minValue = 1; // Default minimum value
         int maxValue = 20; // Default maximum value
 
         Random random = new Random();
-        int[] array = new int[length];
+        double[] array = new double[length];
         for (int i = 0; i < length; i++)
         {
             array[i] = random.Next(minValue, maxValue + 1);

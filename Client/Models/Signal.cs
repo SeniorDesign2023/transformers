@@ -2,7 +2,7 @@ namespace Client.Models
 {
     public class Signal
     {
-        public int[] Elements { get; set; }
+        public double[] Elements { get; set; }
         public int Weight { get; set; }
         public Guid Id { get; set; }
 
