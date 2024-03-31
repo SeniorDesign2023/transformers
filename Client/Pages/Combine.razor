@@ -1,4 +1,6 @@
 @using Client.Models
+@using Client.Shared.API
+@inject API APIServe
 
 @page "/combine"
 
@@ -83,6 +85,7 @@
 
 @code {
     private int[] composedData;
+    private int[][] signals;
     private int size = 0;
     private List<Signal> allSignals = new List<Signal>();
     private List<Signal> includedSignals = new List<Signal>();
@@ -94,6 +97,19 @@
 
     private void CreateCompositeData() 
     {
+
+        @* (composedData, signals) = APIServe.Combine(size);
+        for(int i = 0; i < size; i++)
+        {
+            Signal sig = new Signal
+            {
+                Elements = signals[i],
+                Weight = 1
+            };
+            allSignals.Add(sig);
+            includedSignals.Add(sig);
+        } *@
+
         composedData = GenerateRandomArray();
         for(int i = 0; i < size; i++)
         {

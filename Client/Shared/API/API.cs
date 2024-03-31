@@ -114,7 +114,7 @@ namespace Client.Shared.API
         }
 
         // Stub for combine functionality.
-        public (int[,], int[]) Combine(int size)
+        public (int[], int[][]) Combine(int size)
         {
             return (null, null);
         }
