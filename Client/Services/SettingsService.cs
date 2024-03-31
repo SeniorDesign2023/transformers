@@ -5,18 +5,23 @@ namespace Client.Services
 {
     public class SettingsService
     {
-        private readonly string settingsFile = ".\\settings.json";
+        private readonly string settingsDir = "C:\\temp\\DataFiles";
+        private readonly string settingsFile = "C:\\temp\\DataFiles\\settings.json";
         public SettingsService()
         {
-            if(!File.Exists(settingsFile)) 
+            if (!File.Exists(settingsFile))
             {
+                if (!Directory.Exists(settingsDir))
+                {
+                    Directory.CreateDirectory(settingsDir);
+                }
                 var settings = new Settings
                 {
-                    Path = ".\\",
+                    Path = "C:\\temp\\DataFiles",
                     M = 5
                 };
                 string json = JsonSerializer.Serialize(settings);
-                File.WriteAllText(settingsFile, json); 
+                File.WriteAllText(settingsFile, json);
             }
         }
 

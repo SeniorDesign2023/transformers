@@ -20,7 +20,7 @@ namespace Client.Shared.API
         }
 
         // This function will eventually return a list of integers so we can graph them
-        public int[] TransformPow2(int[] list)
+        public double[] TransformPow2(double[] list)
         {
             int len = list.Length;
             int size = (int)Floor(Log(len, 2));
@@ -29,17 +29,21 @@ namespace Client.Shared.API
         }
 
         // Taking an int list as an arguement to hadamard transform
-        public int[] ForwardHadamardTransform(int[] list, bool truncate, int percent)
+        public double[] ForwardHadamardTransform(double[] list, bool truncate, int percent)
         {
             int len = list.Length;
             int size;
             float percentage = percent / (float)100;
-            int[] tmp = new int[len];
+            double[] tmp = new double[len];
             //creating a deep copy
             Array.Copy(list, tmp, len);
 
             // checking if we are truncating or not
-            if (truncate)
+            if(len == 1)
+            {
+                size = 1;
+            }
+            else if (truncate)
             {
                 size = (int)Floor(Log(len, 2));
             }
@@ -51,7 +55,7 @@ namespace Client.Shared.API
             Array.Resize(ref tmp, (int)Math.Pow(2, size));
 
             // actually doing transform
-            int[] ret = Transform.HadamardTransform(tmp, size);
+            double[] ret = Transform.WalshTransform(tmp, size);
 
             // resizing based on percentage
             Array.Resize(ref ret, (int)(Math.Pow(2,size) * (1 - percentage)));
@@ -61,13 +65,13 @@ namespace Client.Shared.API
 
         // Taking a JSON path as an arguement to hadamard transform
 
-        public int[] ForwardHadamardTransform(string path, bool truncate, int percent)
+        public double[] ForwardHadamardTransform(string path, bool truncate, int percent)
         {
-            int[] list = DeserializeFromPath(path);
+            double[] list = DeserializeFromPath(path);
             int len = list.Length;
             int size;
             float percentage = percent / (float)100;
-            int[] tmp = new int[len];
+            double[] tmp = new double[len];
             //creating a deep copy
             Array.Copy(list, tmp, len);
 
@@ -84,7 +88,7 @@ namespace Client.Shared.API
             Array.Resize(ref tmp, (int)Math.Pow(2, size));
 
             // actually doing transform
-            int[] ret = Transform.HadamardTransform(tmp, size);
+            double[] ret = Transform.WalshTransform(tmp, size);
 
             // resizing based on percentage
             Array.Resize(ref ret, (int)(Math.Pow(2,size) * (1 - percentage)));
@@ -92,16 +96,16 @@ namespace Client.Shared.API
             return ret;
         }
 
-        public int[] InverseHadamardTransform(int[] list)
+        public double[] InverseHadamardTransform(double[] list)
         {
             int len = list.Length;
             int size = (int)Floor(Log(len, 2));
 
-            return Transform.InverseHadamardTransform(list, size);
+            return Transform.InverseWalshTransform(list, size);
         }
 
         // Deserializing JSON files to get an int list
-        public int[] DeserializeFromPath(string path)
+        public double[] DeserializeFromPath(string path)
         {
             // Reading the text for the path
             string json = File.ReadAllText(path);
@@ -117,6 +121,16 @@ namespace Client.Shared.API
         public (int[], int[][]) Combine(int size)
         {
             return (null, null);
+        }
+
+        public double[] Filter(double[] list, int percent){
+            int len = list.Length;
+            float percentage = percent / (float)100;
+            int num = (int)(len * percentage);
+            for(int i = len-num; i<len; i++){
+                list[i] = 0;
+            }
+            return list;
         }
     }
 }

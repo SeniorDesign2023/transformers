@@ -1,3 +1,4 @@
+@using Client.Models
 @using Client.Shared.API
 @inject API APIServe
 
@@ -34,13 +35,6 @@
           <input id="inputData" @bind="dataString" />
       </div>
     </div>
-    
-    <div class="card" style="background-color: #d3d3d3">
-      <div class="card-body">
-        <label for="compPercent">Compression Percentage:</label>
-        <input id="compPercent" type="number" @bind="compression" min="0" max="100" />
-      </div>
-    </div>
 
     <div class="card" style="background-color: #d3d3d3">
       <div class="card-body">
@@ -55,23 +49,27 @@
   </div>
 </div>
 
-@if (outputData != null && outputData.Any())
+@foreach(var data in dataList)
 {
-    <div class="card">
-        <div class="card-header text-end"></div>
-        <div class="card-body text-center">
-            <ScatterChart YVals="outputData" @key="outputData" />
-        </div>
+    <div class="card" style="background-color: #d3d3d3">
+    <div class="card-body text-center">
+        <ScatterChart YVals="data.Elements" @key="data" />
+    </div>
+    <div class="card-footer text-end">
+        <button @onclick="() => InverseData(data)" class="btn btn-primary">Inverse</button>
+        <input id="compPercent" type="number" @bind="data.Compression" min="0" max="100" />%
+        <button @onclick="() => FilterData(data)" class="btn btn-primary">Filter</button>
+    </div>
+
     </div>
 }
 
 
 @code {
     private string dataString;
-    private int[] inputData;
-    private int[] outputData;
+    private double[] inputData;
+    private List<Data> dataList = new List<Data>();
     private bool truncate = false;
-    private int compression = 0;
     [Inject] private NavigationManager NavMan { get; set; }
 
     protected override void OnInitialized()
@@ -81,8 +79,33 @@
 
     private void SendData()
     {
-        inputData = dataString.Split(',').Select(s => int.TryParse(s, out int result) ? result : 0).ToArray();
-        outputData = APIServe.ForwardHadamardTransform(inputData, truncate, compression);
+        inputData = dataString.Split(',').Select(s => double.TryParse(s, out double result) ? result : 0).ToArray();
+        dataList.Clear();
+        Data data = new Data
+        {
+            Elements = APIServe.ForwardHadamardTransform(inputData, truncate, 0)
+        };
+        dataList.Add(data);
+        StateHasChanged();
+    }
+
+    private void FilterData(Data oldData)
+    {
+        Data data = new Data
+        {
+            Elements = APIServe.Filter(oldData.Elements, oldData.Compression)
+        };
+        dataList.Add(data);
+        StateHasChanged();
+    }
+
+    private void InverseData(Data oldData)
+    {
+        Data data = new Data
+        {
+            Elements = APIServe.InverseHadamardTransform(oldData.Elements)
+        };
+        dataList.Add(data);
         StateHasChanged();
     }
 }
