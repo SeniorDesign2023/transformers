@@ -55,7 +55,7 @@ namespace Client.Shared.API
             Array.Resize(ref tmp, (int)Math.Pow(2, size));
 
             // actually doing transform
-            int[] ret = Transform.HadamardTransform(tmp, size);
+            int[] ret = Transform.WalshTransform(tmp, size);
 
             // resizing based on percentage
             Array.Resize(ref ret, (int)(Math.Pow(2,size) * (1 - percentage)));
@@ -88,7 +88,7 @@ namespace Client.Shared.API
             Array.Resize(ref tmp, (int)Math.Pow(2, size));
 
             // actually doing transform
-            int[] ret = Transform.HadamardTransform(tmp, size);
+            int[] ret = Transform.WalshTransform(tmp, size);
 
             // resizing based on percentage
             Array.Resize(ref ret, (int)(Math.Pow(2,size) * (1 - percentage)));
@@ -101,7 +101,7 @@ namespace Client.Shared.API
             int len = list.Length;
             int size = (int)Floor(Log(len, 2));
 
-            return Transform.InverseHadamardTransform(list, size);
+            return Transform.InverseWalshTransform(list, size);
         }
 
         // Deserializing JSON files to get an int list
@@ -124,6 +124,7 @@ namespace Client.Shared.API
             for(int i = len-num; i<len; i++){
                 list[i] = 0;
             }
+            return list;
         }
 
     }

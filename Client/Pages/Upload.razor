@@ -1,6 +1,7 @@
 @page "/upload"
 
-@using Client.Shared.API;
+@using Client.Models
+@using Client.Shared.API
 @inject API APIServe
 
 <div class="card">
@@ -30,13 +31,6 @@
           <InputFile OnChange="@UploadFile" multiple accept=".json" />
       </div>
     </div>
-    
-    <div class="card" style="background-color: #d3d3d3">
-      <div class="card-body">
-        <label for="compPercent">Compression Percentage:</label>
-        <input id="compPercent" type="number" @bind="compression" min="0" max="100" />
-      </div>
-    </div>
 
     <div class="card" style="background-color: #d3d3d3">
       <div class="card-body">
@@ -51,14 +45,19 @@
   </div>
 </div>
 
-<div class="card" style="align-items: center">
-    @if (outputData != null)
-    {
-        <ScatterChart YVals="outputData" @key="outputData" />
-    }
-</div>
-
-
+@foreach(var data in dataList)
+{
+    <div class="card" style="background-color: #d3d3d3">
+    <div class="card-body text-center">
+        <ScatterChart YVals="data.Elements" @key="data" />
+    </div>
+    <div class="card-footer text-end">
+        <button @onclick="() => InverseData(data)" class="btn btn-primary">Inverse</button>
+        <input id="compPercent" type="number" @bind="data.Compression" min="0" max="100" />%
+        <button @onclick="() => FilterData(data)" class="btn btn-primary">Filter</button>
+    </div>
+    </div>
+}
 
 @code {
     private long maxFileSize = 1024 * 1024 * 3; // 3 MB
@@ -66,8 +65,7 @@
     private List<string> errors = new();
     private string path = ".\\";
     private bool truncate = false;
-    private int compression = 0;
-    private int[] outputData;
+    private List<Data> dataList = new List<Data>();
     [Inject] private NavigationManager NavMan { get; set; }
 
     protected override void OnInitialized()
@@ -77,11 +75,32 @@
 
     private void SendData()
     {
-        outputData = APIServe.ForwardHadamardTransform(path, truncate, compression);
+        dataList.Clear();
+        Data data = new Data
+        {
+            Elements = APIServe.ForwardHadamardTransform(path, truncate, 0)
+        };
+        dataList.Add(data);
         StateHasChanged();
-        Console.WriteLine(path);
-        Console.WriteLine(truncate);
-        Console.WriteLine(compression);
+    }
+    private void FilterData(Data oldData)
+    {
+        Data data = new Data
+        {
+            Elements = APIServe.Filter(oldData.Elements, oldData.Compression)
+        };
+        dataList.Add(data);
+        StateHasChanged();
+    }
+
+    private void InverseData(Data oldData)
+    {
+        Data data = new Data
+        {
+            Elements = APIServe.InverseHadamardTransform(oldData.Elements)
+        };
+        dataList.Add(data);
+        StateHasChanged();
     }
 
     private async Task UploadFile(InputFileChangeEventArgs e)
