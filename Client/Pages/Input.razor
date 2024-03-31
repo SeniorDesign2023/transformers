@@ -63,7 +63,7 @@
 
 @code {
     private string dataString;
-    private int[] inputData;
+    private double[] inputData;
     private List<Data> dataList = new List<Data>();
     private bool truncate = false;
     [Inject] private NavigationManager NavMan { get; set; }
@@ -75,7 +75,7 @@
 
     private void SendData()
     {
-        inputData = dataString.Split(',').Select(s => int.TryParse(s, out int result) ? result : 0).ToArray();
+        inputData = dataString.Split(',').Select(s => double.TryParse(s, out double result) ? result : 0).ToArray();
         dataList.Clear();
         Data data = new Data
         {

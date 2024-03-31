@@ -29,7 +29,7 @@ namespace Client.Shared.API
         }
 
         // Taking an int list as an arguement to hadamard transform
-        public int[] ForwardHadamardTransform(int[] list, bool truncate, int percent)
+        public double[] ForwardHadamardTransform(double[] list, bool truncate, int percent)
         {
             int len = list.Length;
             int size;
@@ -55,7 +55,7 @@ namespace Client.Shared.API
             Array.Resize(ref tmp, (int)Math.Pow(2, size));
 
             // actually doing transform
-            int[] ret = Transform.WalshTransform(tmp, size);
+            double[] ret = Transform.WalshTransform(tmp, size);
 
             // resizing based on percentage
             Array.Resize(ref ret, (int)(Math.Pow(2,size) * (1 - percentage)));
@@ -65,9 +65,9 @@ namespace Client.Shared.API
 
         // Taking a JSON path as an arguement to hadamard transform
 
-        public int[] ForwardHadamardTransform(string path, bool truncate, int percent)
+        public double[] ForwardHadamardTransform(string path, bool truncate, int percent)
         {
-            int[] list = DeserializeFromPath(path);
+            double[] list = DeserializeFromPath(path);
             int len = list.Length;
             int size;
             float percentage = percent / (float)100;
@@ -88,7 +88,7 @@ namespace Client.Shared.API
             Array.Resize(ref tmp, (int)Math.Pow(2, size));
 
             // actually doing transform
-            int[] ret = Transform.WalshTransform(tmp, size);
+            double[] ret = Transform.WalshTransform(tmp, size);
 
             // resizing based on percentage
             Array.Resize(ref ret, (int)(Math.Pow(2,size) * (1 - percentage)));
@@ -96,7 +96,7 @@ namespace Client.Shared.API
             return ret;
         }
 
-        public int[] InverseHadamardTransform(int[] list)
+        public double[] InverseHadamardTransform(double[] list)
         {
             int len = list.Length;
             int size = (int)Floor(Log(len, 2));
@@ -105,7 +105,7 @@ namespace Client.Shared.API
         }
 
         // Deserializing JSON files to get an int list
-        public int[] DeserializeFromPath(string path)
+        public double[] DeserializeFromPath(string path)
         {
             // Reading the text for the path
             string json = File.ReadAllText(path);
@@ -117,7 +117,7 @@ namespace Client.Shared.API
             return data.Elements;
         }
 
-        public int[] Filter(int[] list, int percent){
+        public double[] Filter(double[] list, int percent){
             int len = list.Length;
             float percentage = percent / (float)100;
             int num = (int)(len * percentage);
