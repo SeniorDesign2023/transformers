@@ -117,5 +117,14 @@ namespace Client.Shared.API
             return data.Elements;
         }
 
+        public int[] Filter(int[] list, int percent){
+            int len = list.Length;
+            float percentage = percent / (float)100;
+            int num = (int)(len * percentage);
+            for(int i = len-num; i<len; i++){
+                list[i] = 0;
+            }
+        }
+
     }
 }
