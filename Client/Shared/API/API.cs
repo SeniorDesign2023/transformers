@@ -20,7 +20,7 @@ namespace Client.Shared.API
         }
 
         // This function will eventually return a list of integers so we can graph them
-        public int[] TransformPow2(int[] list)
+        public double[] TransformPow2(double[] list)
         {
             int len = list.Length;
             int size = (int)Floor(Log(len, 2));
@@ -34,7 +34,7 @@ namespace Client.Shared.API
             int len = list.Length;
             int size;
             float percentage = percent / (float)100;
-            int[] tmp = new int[len];
+            double[] tmp = new double[len];
             //creating a deep copy
             Array.Copy(list, tmp, len);
 
@@ -71,7 +71,7 @@ namespace Client.Shared.API
             int len = list.Length;
             int size;
             float percentage = percent / (float)100;
-            int[] tmp = new int[len];
+            double[] tmp = new double[len];
             //creating a deep copy
             Array.Copy(list, tmp, len);
 

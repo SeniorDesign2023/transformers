@@ -182,7 +182,7 @@ namespace Client.Shared.HadamardGen {
             var walsh = hadamard.walsh;
 
             for(int i = 0; i < input.Length; i++){
-                double sum =double
+                double sum = 0;
                 for(int j = 0; j < input.Length; j++){
                     sum += input[j] * matrix[j,i];
                 }
