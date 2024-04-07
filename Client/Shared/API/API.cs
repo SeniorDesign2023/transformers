@@ -28,7 +28,111 @@ namespace Client.Shared.API
             return Transform.HadamardTransform(list, size);
         }
 
-        // Taking an int list as an arguement to hadamard transform
+        // Taking a JSON path as an arguement to hadamard transform
+
+        public double[] InitialData(string path, bool truncate, int percent)
+        {
+            double[] list = DeserializeFromPath(path);
+            int len = list.Length;
+            int size;
+            float percentage = percent / (float)100;
+            double[] tmp = new double[len];
+            //creating a deep copy
+            Array.Copy(list, tmp, len);
+
+            // checking if we are truncating or not
+            if (truncate)
+            {
+                size = (int)Floor(Log(len, 2));
+            }
+            else
+            {
+                size = (int)Ceiling(Log(len, 2));
+            }
+            // resizing the array to the calculated truncation
+            Array.Resize(ref tmp, (int)Math.Pow(2, size));
+
+            return tmp;
+        }
+
+        // hadamard function
+        public double[] ForwardHadamardTransform(double[] list, bool truncate, int percent)
+        {
+            int len = list.Length;
+            int size;
+            float percentage = percent / (float)100;
+            double[] tmp = new double[len];
+            //creating a deep copy
+            Array.Copy(list, tmp, len);
+
+            // checking if we are truncating or not
+            if(len == 1)
+            {
+                size = 1;
+            }
+            else if (truncate)
+            {
+                size = (int)Floor(Log(len, 2));
+            }
+            else
+            {
+                size = (int)Ceiling(Log(len, 2));
+            }
+            // resizing the array to the calculated truncation
+            Array.Resize(ref tmp, (int)Math.Pow(2, size));
+
+            // actually doing transform
+            double[] ret = Transform.HadamardTransform(tmp, size);
+
+            // resizing based on percentage
+            Array.Resize(ref ret, (int)(Math.Pow(2,size) * (1 - percentage)));
+
+            return ret;
+        }
+
+        // overloaded hadamard function, takes path instead of list
+
+        public double[] ForwardHadamardTransform(string path, bool truncate, int percent)
+        {
+            double[] list = DeserializeFromPath(path);
+            int len = list.Length;
+            int size;
+            float percentage = percent / (float)100;
+            double[] tmp = new double[len];
+            //creating a deep copy
+            Array.Copy(list, tmp, len);
+
+            // checking if we are truncating or not
+            if (truncate)
+            {
+                size = (int)Floor(Log(len, 2));
+            }
+            else
+            {
+                size = (int)Ceiling(Log(len, 2));
+            }
+            // resizing the array to the calculated truncation
+            Array.Resize(ref tmp, (int)Math.Pow(2, size));
+
+            // actually doing transform
+            double[] ret = Transform.HadamardTransform(tmp, size);
+
+            // resizing based on percentage
+            Array.Resize(ref ret, (int)(Math.Pow(2,size) * (1 - percentage)));
+
+            return ret;
+        }
+        
+        // inverse hadamard
+        public double[] InverseHadamardTransform(double[] list)
+        {
+            int len = list.Length;
+            int size = (int)Floor(Log(len, 2));
+
+            return Transform.InverseHadamardTransform(list, size);
+        }
+
+        // Taking an int list as an argument to walsh transform
         public double[] ForwardWalshTransform(double[] list, bool truncate, int percent)
         {
             int len = list.Length;
@@ -63,32 +167,7 @@ namespace Client.Shared.API
             return ret;
         }
 
-        // Taking a JSON path as an arguement to hadamard transform
-
-        public double[] InitialData(string path, bool truncate, int percent)
-        {
-            double[] list = DeserializeFromPath(path);
-            int len = list.Length;
-            int size;
-            float percentage = percent / (float)100;
-            double[] tmp = new double[len];
-            //creating a deep copy
-            Array.Copy(list, tmp, len);
-
-            // checking if we are truncating or not
-            if (truncate)
-            {
-                size = (int)Floor(Log(len, 2));
-            }
-            else
-            {
-                size = (int)Ceiling(Log(len, 2));
-            }
-            // resizing the array to the calculated truncation
-            Array.Resize(ref tmp, (int)Math.Pow(2, size));
-
-            return tmp;
-        }
+        // overloaded walsh function, takes path instead of list
 
         public double[] ForwardWalshTransform(string path, bool truncate, int percent)
         {
