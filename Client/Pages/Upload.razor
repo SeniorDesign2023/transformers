@@ -57,9 +57,13 @@
         <ScatterChart YVals="data.Elements" @key="data" />
     </div>
     <div class="card-footer text-end">
-        <button @onclick="() => InverseData(data)" class="btn btn-primary">Inverse</button>
+        <button @onclick="() => Walsh(data)" class="btn btn-primary">Walsh</button>
+        <button @onclick="() => Hadamard(data)" class="btn btn-primary">Hadamard</button>
+        <label for="inverse">Inverse</label>
+        <input type="checkbox" @bind="data.Inverse"/>
         <input id="compPercent" type="number" @bind="data.Compression" min="0" max="100" />%
-        <button @onclick="() => FilterData(data)" class="btn btn-primary">Filter</button>
+        <label for="trunc">Truncate</label>
+        <input type="checkbox" @bind="data.Truncate"/>
     </div>
     </div>
 }
@@ -89,35 +93,51 @@
         dataList.Add(data);
         StateHasChanged();
     }
-
-    @* private void SendData()
+    
+    private void Walsh(Data oldData)
     {
-        dataList.Clear();
-        Data data = new Data
+        Data data;
+        if(oldData.Inverse)
         {
-            Elements = APIServe.ForwardHadamardTransform(path, truncate, 0)
-        };
-        dataList.Add(data);
-        StateHasChanged();
-    } *@
-    private void FilterData(Data oldData)
-    {
-        Data data = new Data
+            data = new Data
+            {
+                Elements = APIServe.InverseWalshTransform(oldData.Elements, oldData.Truncate, oldData.Compression)
+            };
+            dataList.Add(data);
+            StateHasChanged();
+        }
+        else
         {
-            Elements = APIServe.Filter(oldData.Elements, oldData.Compression)
-        };
-        dataList.Add(data);
-        StateHasChanged();
+            data = new Data
+            {
+                Elements = APIServe.ForwardWalshTransform(oldData.Elements, oldData.Truncate, oldData.Compression)
+            };
+            dataList.Add(data);
+            StateHasChanged();
+        }
     }
 
-    private void InverseData(Data oldData)
+    private void Hadamard(Data oldData)
     {
-        Data data = new Data
+        Data data;
+        if(oldData.Inverse)
         {
-            Elements = APIServe.InverseWalshTransform(oldData.Elements)
-        };
-        dataList.Add(data);
-        StateHasChanged();
+            data = new Data
+            {
+                Elements = APIServe.InverseHadamardTransform(oldData.Elements, oldData.Truncate, oldData.Compression)
+            };
+            dataList.Add(data);
+            StateHasChanged();
+        }
+        else
+        {
+            data = new Data
+            {
+                Elements = APIServe.ForwardHadamardTransform(oldData.Elements, oldData.Truncate, oldData.Compression)
+            };
+            dataList.Add(data);
+            StateHasChanged();
+        }
     }
 
     private async Task UploadFile(InputFileChangeEventArgs e)
