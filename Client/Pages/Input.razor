@@ -79,7 +79,7 @@
         dataList.Clear();
         Data data = new Data
         {
-            Elements = APIServe.ForwardHadamardTransform(inputData, truncate, 0)
+            Elements = APIServe.ForwardWalshTransform(inputData, truncate, 0)
         };
         dataList.Add(data);
         StateHasChanged();
@@ -99,7 +99,7 @@
     {
         Data data = new Data
         {
-            Elements = APIServe.InverseHadamardTransform(oldData.Elements)
+            Elements = APIServe.InverseWalshTransform(oldData.Elements)
         };
         dataList.Add(data);
         StateHasChanged();

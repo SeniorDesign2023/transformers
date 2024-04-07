@@ -29,7 +29,7 @@ namespace Client.Shared.API
         }
 
         // Taking an int list as an arguement to hadamard transform
-        public double[] ForwardHadamardTransform(double[] list, bool truncate, int percent)
+        public double[] ForwardWalshTransform(double[] list, bool truncate, int percent)
         {
             int len = list.Length;
             int size;
@@ -65,7 +65,32 @@ namespace Client.Shared.API
 
         // Taking a JSON path as an arguement to hadamard transform
 
-        public double[] ForwardHadamardTransform(string path, bool truncate, int percent)
+        public double[] InitialData(string path, bool truncate, int percent)
+        {
+            double[] list = DeserializeFromPath(path);
+            int len = list.Length;
+            int size;
+            float percentage = percent / (float)100;
+            double[] tmp = new double[len];
+            //creating a deep copy
+            Array.Copy(list, tmp, len);
+
+            // checking if we are truncating or not
+            if (truncate)
+            {
+                size = (int)Floor(Log(len, 2));
+            }
+            else
+            {
+                size = (int)Ceiling(Log(len, 2));
+            }
+            // resizing the array to the calculated truncation
+            Array.Resize(ref tmp, (int)Math.Pow(2, size));
+
+            return tmp;
+        }
+
+        public double[] ForwardWalshTransform(string path, bool truncate, int percent)
         {
             double[] list = DeserializeFromPath(path);
             int len = list.Length;
@@ -96,7 +121,7 @@ namespace Client.Shared.API
             return ret;
         }
 
-        public double[] InverseHadamardTransform(double[] list)
+        public double[] InverseWalshTransform(double[] list)
         {
             int len = list.Length;
             int size = (int)Floor(Log(len, 2));
