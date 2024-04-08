@@ -34,7 +34,7 @@
     <div class="card" style="background-color: #d3d3d3">
       <div class="card-body">
         <label for="compression">Compression:</label>
-        <input id="comppression" type="number" @bind="compression" min="0" max="100" />%
+        <input id="compression" type="number" @bind="compression" min="0" max="100" />%
       </div>
     </div>
     <div class="card" style="background-color: #d3d3d3">
@@ -53,18 +53,46 @@
 @foreach(var data in dataList)
 {
     <div class="card" style="background-color: #d3d3d3">
-    <div class="card-body text-center">
-        <ScatterChart YVals="data.Elements" @key="data" />
-    </div>
-    <div class="card-footer text-end">
-        <button @onclick="() => Walsh(data)" class="btn btn-primary">Walsh</button>
-        <button @onclick="() => Hadamard(data)" class="btn btn-primary">Hadamard</button>
-        <label for="inverse">Inverse</label>
-        <input type="checkbox" @bind="data.Inverse"/>
-        <input id="compPercent" type="number" @bind="data.Compression" min="0" max="100" />%
-        <label for="trunc">Truncate</label>
-        <input type="checkbox" @bind="data.Truncate"/>
-    </div>
+        <div class="card-body text-center">
+            <ScatterChart YVals="data.Elements" @key="data" />
+        </div>
+        <div class="card-footer text-end">
+            <div class="card-group">
+                <div class="card" style="background-color: #d3d3d3">
+                    <div class="card-body">
+                        <div>
+                            <label for="inverse">Inverse</label>
+                            <input type="checkbox" @bind="data.Inverse"/>
+                        </div>
+                        <div>
+                            <label for="trunc">Truncate</label>
+                            <input type="checkbox" @bind="data.Truncate"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="background-color: #d3d3d3">
+                    <div class="card-body">
+                        <label for="compPercent">Filter:</label>
+                        <input id="compPercent" type="number" @bind="data.Compression" min="0" max="100" />%
+                    </div>
+                </div>
+                <div class="card" style="background-color: #d3d3d3">
+                    <div class="card-body">
+                        <button @onclick="() => Hadamard(data)" class="btn btn-primary">Hadamard</button>
+                    </div>
+                </div>
+                <div class="card" style="background-color: #d3d3d3">
+                    <div class="card-body">
+                        <button @onclick="() => Walsh(data)" class="btn btn-primary">Walsh</button>
+                    </div>
+                </div>
+                <div class="card" style="background-color: #d3d3d3">
+                    <div class="card-body">
+                        <button @onclick="() => FilterData(data)" class="btn btn-primary">Filter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 }
 
@@ -101,7 +129,7 @@
         {
             data = new Data
             {
-                Elements = APIServe.InverseWalshTransform(oldData.Elements, oldData.Truncate, oldData.Compression)
+                Elements = APIServe.InverseWalshTransform(oldData.Elements)
             };
             dataList.Add(data);
             StateHasChanged();
@@ -124,7 +152,7 @@
         {
             data = new Data
             {
-                Elements = APIServe.InverseHadamardTransform(oldData.Elements, oldData.Truncate, oldData.Compression)
+                Elements = APIServe.InverseHadamardTransform(oldData.Elements)
             };
             dataList.Add(data);
             StateHasChanged();
@@ -138,6 +166,16 @@
             dataList.Add(data);
             StateHasChanged();
         }
+    }
+
+    private void FilterData(Data oldData)
+    {
+        Data data = new Data
+        {
+            Elements = APIServe.Filter(oldData.Elements, oldData.Compression)
+        };
+        dataList.Add(data);
+        StateHasChanged();
     }
 
     private async Task UploadFile(InputFileChangeEventArgs e)
