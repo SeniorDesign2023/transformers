@@ -32,7 +32,12 @@
           <input id="inputData" @bind="dataString" />
       </div>
     </div>
-
+    <div class="card" style="background-color: #d3d3d3">
+      <div class="card-body">
+        <label for="compression">Compression:</label>
+        <input id="compression" type="number" @bind="compression" min="0" max="100" />%
+      </div>
+    </div>
     <div class="card" style="background-color: #d3d3d3">
       <div class="card-body">
         <label for="truncData">Truncate Data:</label>
@@ -49,14 +54,46 @@
 @foreach(var data in dataList)
 {
     <div class="card" style="background-color: #d3d3d3">
-    <div class="card-body text-center">
-        <ScatterChart YVals="data.Elements" @key="data" />
-    </div>
-    <div class="card-footer text-end">
-        <button @onclick="() => InverseData(data)" class="btn btn-primary">Inverse</button>
-        <input id="compPercent" type="number" @bind="data.Compression" min="0" max="100" />%
-        <button @onclick="() => FilterData(data)" class="btn btn-primary">Filter</button>
-    </div>
+        <div class="card-body text-center">
+            <ScatterChart YVals="data.Elements" @key="data" />
+        </div>
+        <div class="card-footer text-end">
+            <div class="card-group">
+                <div class="card" style="background-color: #d3d3d3">
+                    <div class="card-body">
+                        <div>
+                            <label for="inverse">Inverse</label>
+                            <input type="checkbox" @bind="data.Inverse"/>
+                        </div>
+                        <div>
+                            <label for="trunc">Truncate</label>
+                            <input type="checkbox" @bind="data.Truncate"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="background-color: #d3d3d3">
+                    <div class="card-body">
+                        <label for="compPercent">Filter:</label>
+                        <input id="compPercent" type="number" @bind="data.Compression" min="0" max="100" />%
+                    </div>
+                </div>
+                <div class="card" style="background-color: #d3d3d3">
+                    <div class="card-body">
+                        <button @onclick="() => Hadamard(data)" class="btn btn-primary">Hadamard</button>
+                    </div>
+                </div>
+                <div class="card" style="background-color: #d3d3d3">
+                    <div class="card-body">
+                        <button @onclick="() => Walsh(data)" class="btn btn-primary">Walsh</button>
+                    </div>
+                </div>
+                <div class="card" style="background-color: #d3d3d3">
+                    <div class="card-body">
+                        <button @onclick="() => FilterData(data)" class="btn btn-primary">Filter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 }
 
@@ -66,6 +103,7 @@
     private double[] inputData;
     private List<Data> dataList = new List<Data>();
     private bool truncate = false;
+    private int compression = 0;
     [Inject] private NavigationManager NavMan { get; set; }
 
     protected override void OnInitialized()
@@ -79,10 +117,56 @@
         dataList.Clear();
         Data data = new Data
         {
-            Elements = APIServe.ForwardWalshTransform(inputData, truncate, 0)
+            Elements = APIServe.InitialData(inputData, truncate, compression)
         };
         dataList.Add(data);
         StateHasChanged();
+    }
+
+    private void Walsh(Data oldData)
+    {
+        Data data;
+        if(oldData.Inverse)
+        {
+            data = new Data
+            {
+                Elements = APIServe.InverseWalshTransform(oldData.Elements)
+            };
+            dataList.Add(data);
+            StateHasChanged();
+        }
+        else
+        {
+            data = new Data
+            {
+                Elements = APIServe.ForwardWalshTransform(oldData.Elements, oldData.Truncate, oldData.Compression)
+            };
+            dataList.Add(data);
+            StateHasChanged();
+        }
+    }
+
+    private void Hadamard(Data oldData)
+    {
+        Data data;
+        if(oldData.Inverse)
+        {
+            data = new Data
+            {
+                Elements = APIServe.InverseHadamardTransform(oldData.Elements)
+            };
+            dataList.Add(data);
+            StateHasChanged();
+        }
+        else
+        {
+            data = new Data
+            {
+                Elements = APIServe.ForwardHadamardTransform(oldData.Elements, oldData.Truncate, oldData.Compression)
+            };
+            dataList.Add(data);
+            StateHasChanged();
+        }
     }
 
     private void FilterData(Data oldData)
@@ -90,16 +174,6 @@
         Data data = new Data
         {
             Elements = APIServe.Filter(oldData.Elements, oldData.Compression)
-        };
-        dataList.Add(data);
-        StateHasChanged();
-    }
-
-    private void InverseData(Data oldData)
-    {
-        Data data = new Data
-        {
-            Elements = APIServe.InverseWalshTransform(oldData.Elements)
         };
         dataList.Add(data);
         StateHasChanged();

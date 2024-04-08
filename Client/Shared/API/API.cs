@@ -30,6 +30,29 @@ namespace Client.Shared.API
 
         // Taking a JSON path as an arguement to hadamard transform
 
+        public double[] InitialData(double[] list, bool truncate, int percent)
+        {
+            int len = list.Length;
+            int size;
+            float percentage = percent / (float)100;
+            double[] tmp = new double[len];
+            //creating a deep copy
+            Array.Copy(list, tmp, len);
+
+            // checking if we are truncating or not
+            if (truncate)
+            {
+                size = (int)Floor(Log(len, 2));
+            }
+            else
+            {
+                size = (int)Ceiling(Log(len, 2));
+            }
+            // resizing the array to the calculated truncation
+            Array.Resize(ref tmp, (int)Math.Pow(2, size));
+
+            return tmp;
+        }
         public double[] InitialData(string path, bool truncate, int percent)
         {
             double[] list = DeserializeFromPath(path);
