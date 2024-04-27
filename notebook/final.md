@@ -1,0 +1,61 @@
+Final Project Notebook
+
+-----
+- Location
+  - <https://github.com/SeniorDesign2023/transformers>
+- Project goals
+  - Create a desktop app that:
+    - Accepts a JSON file that contains user data
+    - Graphs user data
+    - Transforms user data based on user configuration 
+  - Create a Hadamard matrix generator
+  - Have a modern UI/UX
+  - Structure the app to allow for future development
+- Status Updates
+  - [Status 1](https://github.com/SeniorDesign2023/transformers/blob/459a68970b3cc2d9e690179f34cdb9ea792383ae/status/status1.md)
+  - [Status 2](https://github.com/SeniorDesign2023/transformers/blob/459a68970b3cc2d9e690179f34cdb9ea792383ae/status2/status2.md)
+  - [Status 3](https://github.com/SeniorDesign2023/transformers/blob/459a68970b3cc2d9e690179f34cdb9ea792383ae/status3/status3.md)
+  - [Status 4](https://github.com/SeniorDesign2023/transformers/blob/b30037ec0be07f85bf8c80f6d201dcdc126f3e1e/status4/status4.md)
+  - [Status 5](https://github.com/SeniorDesign2023/transformers/blob/b30037ec0be07f85bf8c80f6d201dcdc126f3e1e/status5/status5.md)
+  - [Status 6](https://github.com/SeniorDesign2023/transformers/blob/b30037ec0be07f85bf8c80f6d201dcdc126f3e1e/status6/status6.md)
+- Project Video
+  - <https://www.youtube.com/watch?v=MeGGBQ0qWwc&ab_channel=DerikGarcia>
+- Project Planning and Execution
+  - Design Requirements & Specification
+    - [Final Planning Document](https://github.com/SeniorDesign2023/transformers/blob/main/planning/Final%20Planning.pdf)
+  - Finalized Plan of Work
+    - Expected
+      - Originally we planned for more complex functionality including other transforms and more widgets. The UI design was less important to us but we planned to add additional widgets to allow the user to customize their workspace. We wanted to stream audio and transform the data live and create a polyphonic tuner as well.
+    - Actual
+      - Our final product focused more on UI/UX and making the application more general purpose. We ran out of time to implement audio and so we could not create the polyphonic tuner either. The addition of user settings improved both the user and developer experiences. Keeping track of calculations and presenting generic, calculator-type controls helped make the application more general purpose as well.
+- Final Implementation
+  - Design
+    - Separated the functionality into a backend that calculated the transformations, a front end that accepted user data and input and a graphing API that allowed for simple calls from the front end that returned transformed data from the backend. All written in a MAUI Blazor Hybrid application.
+  - Limitations
+    - Only Walsh and Hadamard transforms
+    - Only accepts our custom JSON format for input data
+  - Future Direction
+    - Implement other transformations for additional functionality.
+    - Implement the two-dimensional WHT
+      - Image compression and other two-dimensional data
+    - Implement Polyphonic tuner
+    - Allow for other open-source contributions
+    - Look into computational speed-up
+      - Parallel WHT algorithms
+  - Statement of Work
+    - Derik Garcia: Documentation, worked on developing and implementing various algorithms in code and assisted with bottlenecks wherever they occurred. Scheduled and prioritized work for the week.
+    - Chet Russell: Completed the API, helped out with the User Interface and edited the final video.
+    - Kain Randall: Assisted with the back-end code.
+    - Finn Tomasula-Martin: Worked on the frontend/UI of the app and all application configuration needed. Assisted in defining what the frontend needed from the API. 
+    - Calvin VanWormer: Completed the back-end engine that computes the WHT. Helped with design and some implementation of the API. 
+- Reflection on your team's ability to design, implement, and evaluate a solution
+  - Lessons Learned
+    - We should have started the configuration of our application earlier. This could have saved us some time to implement more stretch goals. We could have worked to shrink our scope down from the beginning. We kept our code in a state where we could be very flexible with adding or removing functionality so we were able to experiment with solutions more easily.
+  - "If you had to do it all over again"
+    - Create more specific tasks for each member to complete each week.
+    - Try and get organized a little bit earlier so we can extend functionality and implementation.
+  - Advice for future teams
+    - Designate specific tasks to complete each week for each person. 
+    - Communicate about design and other planning/functionality for better organization so everyone understands the product vision.
+    - Don’t be afraid to break things and try out technologies you are not familiar with.
+
